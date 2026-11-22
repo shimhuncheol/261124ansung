@@ -175,7 +175,24 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 .tasks small{display:block;color:var(--mut);font-size:15px;margin-top:8px}
 .cfg{margin-top:28px;border-top:1px solid var(--line);padding-top:18px;font-size:15px;color:var(--mut)}
 .cfg input{font-size:15px;margin-top:6px}
-@media(prefers-reduced-motion:reduce){.tb-wrap{transition:none}}
+.mg{aspect-ratio:16/9;background:var(--btn);color:var(--btnk);border-radius:24px;position:relative;overflow:hidden}
+.mg .sc{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 64px;opacity:0}
+.mg .sc.on{opacity:1}
+.mg .sc b{font-size:108px;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.mg .sc span{font-size:30px;opacity:.8;margin-top:18px}
+.mg .sc.on b{animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.mg .sc.on span{animation:rise .6s .25s ease-out both}
+.mg .sc i{position:absolute;right:-80px;top:-80px;width:360px;height:360px;border-radius:50%;background:var(--ok);opacity:.9}
+.mg .sc.on i{animation:grow 3.4s ease-out both}
+.mg .bar2{position:absolute;left:0;bottom:0;height:8px;background:var(--ok);width:0}
+.mg .bar2.run{animation:fill 3.5s linear both}
+.mg .no{position:absolute;left:64px;top:40px;font-size:22px;opacity:.6}
+@keyframes pop{from{transform:scale(.4) translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes rise{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:.8}}
+@keyframes grow{from{transform:scale(.2)}to{transform:scale(1)}}
+@keyframes fill{from{width:0}to{width:100%}}
+.cmp{width:100%;border-collapse:collapse;font-size:21px;margin-top:8px}
+@media(prefers-reduced-motion:reduce){.tb-wrap{transition:none}.mg *{animation:none!important}}
 </style>
 <script src="config.js"></script>
 </head>
@@ -205,7 +222,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   <div class="ladder">
     <div style="height:24%"><b>딸각</b><span>붙여넣고 "요약해줘"</span></div>
     <div style="height:38%"><b>+대상</b><span>교장 보고용 3줄</span></div>
-    <div style="height:52%"><b>+이미지</b><span>카드뉴스·포스터</span></div>
+    <div style="height:52%"><b>+이미지·영상</b><span>카드뉴스·포스터·영상</span></div>
     <div style="height:66%"><b>+HTML</b><span>회의 발표 자료</span></div>
     <div style="height:82%"><b>+상호작용</b><span>OX 퀴즈</span></div>
     <div style="height:100%"><b>+기능</b><span>근무기간 계산기</span></div>
@@ -233,7 +250,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 
 <!-- 4 자료 -->
 <section class="slide" data-sec="p1" data-t="실습 자료"><div class="two">
-  <div><p class="k">1단계 · 25분</p><h2>업무·보고서</h2>
+  <div><p class="k">1단계 · 20분</p><h2>업무·보고서</h2>
     <p class="d">공문을 붙여넣고 "요약해줘"부터 시작합니다. 요청에 대상과 형식을 한 줄씩 더하면 결과가 어떻게 달라지는지 봅니다.</p>
     <p><span class="tag">Claude</span><span class="tag">ChatGPT</span><span class="tag">Gemini</span><span class="tag">NotebookLM</span></p>
     <div class="links"><button class="pill dark cp2" data-t="doc">자료 복사</button></div>
@@ -345,7 +362,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 
 <!-- 10 2-1 -->
 <section class="slide" data-sec="p2" data-t="2-1 카드뉴스"><div class="two">
-  <div><p class="k">2단계 · 20분</p><h2>안내·홍보 자료</h2>
+  <div><p class="k">2단계 · 30분</p><h2>안내·홍보 자료</h2>
     <p class="d">1단계 대화창에 이어서 넣습니다. 장 수와 줄 수를 정해 주면 바로 쓸 수 있는 문구가 나옵니다.</p>
     <div class="chat" style="margin-top:10px">
       <div class="u" id="u21" data-ek>이 전보 안내를 교직원용 카드뉴스 4장으로 만들 거야. 장마다 제목 1줄, 본문 2줄 이내로 문구를 써줘.</div>
@@ -363,7 +380,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   <div><p class="k">2-2 · 2-3</p><h2><span class="plus">+이미지</span><br>포스터 배경 만들기</h2>
     <p class="d">Gemini 새 채팅에 넣습니다. AI 이미지는 한글이 자주 깨지니, 글자 없는 배경만 만들고 글자는 캔바에서 얹습니다.</p>
     <div class="links"><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><a class="pill" href="https://www.canva.com" target="_blank" rel="noopener">캔바</a><button class="pill done-b" data-k="p2-2">완료</button></div>
-    <p class="note" data-ek>강사 시연: 같은 이미지를 15초 안내 영상으로 바꾸는 과정은 화면으로만 보여드립니다.</p></div>
+    <p class="note" data-ek>만든 포스터 이미지는 다음 장 Flow 실습에서 영상의 첫 장면으로 다시 씁니다.</p></div>
   <div class="chat">
     <div class="u" id="u22" data-ek>교무실 게시판에 붙일 안내 포스터 배경 이미지를 만들어줘. 햇빛이 드는 초등학교 복도, 따뜻하고 차분한 분위기, 세로 비율, 위쪽 3분의 1은 글자를 얹을 수 있게 비워두고, 글자는 넣지 마.</div>
     <div class="acts"><button class="cp" data-t="u22">⧉ 복사</button></div>
@@ -371,6 +388,50 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <div class="u" id="u23" data-ek>방금 만든 카드뉴스 형식 그대로, 12월 19일(토) 학예발표회 학부모 안내로 바꿔줘. 시간, 장소, 주차 안내를 넣어줘.</div>
     <div class="acts"><button class="cp" data-t="u23">⧉ 복사</button></div>
   </div>
+</div></section>
+
+<!-- Flow -->
+<section class="slide" data-sec="p2" data-t="2-4 +영상 Flow"><div class="two">
+  <div><p class="k">2-4 · Google Flow</p><h2><span class="plus">+영상</span><br>8초 안내 영상 만들기</h2>
+    <p class="d">무료 구글 계정도 매일 크레딧이 들어옵니다. 모델은 크레딧이 적게 드는 Lite나 Fast를 고르세요.</p>
+    <ol class="d" style="padding-left:1.2em;margin:0 0 14px;font-size:24px">
+      <li data-ek>Flow 접속 → 새 프로젝트</li>
+      <li data-ek>오른쪽 프롬프트를 붙여넣고 생성</li>
+      <li data-ek>(더하기) 2-2 포스터 이미지를 첫 장면(프레임)으로 넣고 다시 생성</li></ol>
+    <div class="links"><a class="pill dark" href="https://labs.google/flow" target="_blank" rel="noopener">Flow 열기</a><button class="pill done-b" data-k="p2-4">완료</button></div>
+    <p class="note" data-ek>영상 속 한글 글자는 잘 깨집니다. 글자는 넣지 말고 장면만 만드세요.</p></div>
+  <div class="chat">
+    <p class="k" style="align-self:flex-end;margin:0">① Claude·Gemini에게 영상 프롬프트 부탁하기</p>
+    <div class="u" id="u24" data-ek>교직원 대상 전보 안내 영상의 도입 장면을 Google Flow 영상 프롬프트로 써줘. 8초, 장면·카메라 움직임·조명·소리를 넣고, 화면에 글자는 넣지 마. 영어 프롬프트와 한국어 설명을 함께.</div>
+    <div class="acts"><button class="cp" data-t="u24">⧉ 복사</button></div>
+    <p class="k" style="align-self:flex-end;margin:6px 0 0">② 바로 쓰는 예시 프롬프트 (Flow에 붙여넣기)</p>
+    <div class="u" id="u25" style="font-size:23px" data-ek>A warm, sunlit elementary school hallway on an early spring morning. The camera slowly dollies forward past classroom doors toward a tidy bulletin board. Soft golden light pours through tall windows. Quiet ambient sound: distant children's laughter and birds chirping. No text on screen.</div>
+    <div class="acts"><button class="cp" data-t="u25">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 모션그래픽 -->
+<section class="slide" data-sec="p2" data-t="2-5 +움직임 모션그래픽"><div class="two">
+  <div><p class="k">2-5 · Claude 모션그래픽</p><h2><span class="plus">+움직임</span><br>숫자가 움직이는<br>안내 화면</h2>
+    <p class="d">Claude는 영상 대신 코드로 움직이는 화면을 만듭니다. 날짜와 숫자가 정확하고, 말로 바로 고칠 수 있습니다.</p>
+    <div class="chat">
+      <div class="u" id="u26" style="font-size:24px" data-ek>위 전보 안내 핵심 4가지를 15초 모션그래픽으로 만들어줘. HTML 한 파일, 16:9, 검정 바탕에 흰 글씨와 초록 포인트, 날짜와 숫자가 크게 튀어나오는 애니메이션, 장면마다 3~4초, 끝나면 처음부터 반복.</div>
+      <div class="acts"><button class="cp" data-t="u26" data-doc="1">⧉ 자료 + 요청 복사</button></div>
+      <div class="u" id="u27" style="font-size:24px" data-ek>두 번째 장면은 조금 더 천천히, 마지막에 '내신서는 온라인으로'를 넣어줘.</div>
+      <div class="acts"><button class="cp" data-t="u27">⧉ 복사</button><button class="pill done-b" data-k="p2-5">완료</button></div></div></div>
+  <div class="widget">
+    <div class="mg" id="mg">
+      <span class="no" id="mgNo">1 / 4</span>
+      <div class="sc"><i></i><b>2027. 2. 28.</b><span>근무기간 기준일</span></div>
+      <div class="sc"><i></i><b>5년</b><span>같은 학교 5년이면 만기 전보</span></div>
+      <div class="sc"><i></i><b>2년 · 5개교</b><span>희망 전보는 2년부터, 지망은 5개교까지</span></div>
+      <div class="sc"><i></i><b>12. 11.(금)</b><span>내신서 온라인 제출 마감</span></div>
+      <div class="bar2" id="mgBar"></div>
+    </div>
+    <table class="cmp"><thead><tr><th></th><th>Flow 영상</th><th>Claude 모션그래픽</th></tr></thead><tbody>
+      <tr><td class="nw">잘하는 것</td><td>실사 같은 장면, 소리</td><td>정확한 글자·숫자, 바로 수정</td></tr>
+      <tr><td class="nw">어울리는 곳</td><td>행사 홍보, 수업 도입</td><td>회의 안내, 일정·수치 강조</td></tr></tbody></table>
+    <p class="smp" style="margin-top:10px">완성본 예시 · 실습용 가상 내용</p></div>
 </div></section>
 
 <!-- 12 3-1 -->
@@ -427,7 +488,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 
 <!-- 16 계산기 -->
 <section class="slide" data-sec="p5" data-t="계산기 체험"><div class="full">
-  <div><p class="k">5단계 · 25분 · 완성본 먼저 써 보기</p><h2 style="margin-bottom:8px">근무기간·만기 계산기</h2></div>
+  <div><p class="k">5단계 · 20분 · 완성본 먼저 써 보기</p><h2 style="margin-bottom:8px">근무기간·만기 계산기</h2></div>
   <div class="calc widget">
     <div class="set">
       <div class="big r" id="sA">0명</div><div style="font-size:22px">만기 전보 대상</div>
@@ -494,6 +555,8 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <tr><td class="nw" data-ek>+형식</td><td data-ek>문서 종류, 말투, 분량</td><td data-ek>메신저 안내문으로, 정중하게, 300자 이내.</td></tr>
     <tr><td class="nw" data-ek>+근거</td><td data-ek>자료를 주고 묻기</td><td data-ek>NotebookLM에 자료를 넣고 질문, 근거 번호 확인.</td></tr>
     <tr><td class="nw" data-ek>+이미지</td><td data-ek>장면, 분위기, 비율, 여백</td><td data-ek>세로 포스터 배경, 위쪽은 비우고 글자는 넣지 마.</td></tr>
+    <tr><td class="nw" data-ek>+영상</td><td data-ek>장면, 카메라, 조명, 소리</td><td data-ek>8초, 천천히 다가가는 카메라, 글자는 넣지 마.</td></tr>
+    <tr><td class="nw" data-ek>+움직임</td><td data-ek>길이, 장면 수, 무엇이 튀어나올지</td><td data-ek>15초 모션그래픽, 숫자가 크게 튀어나오게.</td></tr>
     <tr><td class="nw" data-ek>+HTML</td><td data-ek>HTML로, 장 수, 넘기기</td><td data-ek>HTML 발표 자료 6장, 방향키로 넘기기.</td></tr>
     <tr><td class="nw" data-ek>+상호작용</td><td data-ek>누르면 무엇이 나오는지</td><td data-ek>OX를 누르면 정답과 근거가 나오게.</td></tr>
     <tr><td class="nw" data-ek>+기능</td><td data-ek>넣으면 무엇이 나오는지</td><td data-ek>발령일을 넣으면 근무기간과 만기 여부가 나오게.</td></tr>
@@ -560,10 +623,10 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 <script>
 {
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const VER='v2';
+const VER='v3';
 const store={get(k,d){try{const v=localStorage.getItem('adminkit2:'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('adminkit2:'+k,JSON.stringify(v))}catch(e){}}};
 const stage=$('#stage');
-const secs=[['start','시작',10],['p1','1 업무·보고서',25],['p2','2 안내·홍보',20],['p3','3 HTML 발표',15],['p4','4 참여형 퀴즈',10],['p5','5 업무 웹앱',25],['p6','마무리',10]];
+const secs=[['start','시작',10],['p1','1 업무·보고서',20],['p2','2 안내·홍보·영상',30],['p3','3 HTML 발표',15],['p4','4 참여형 퀴즈',10],['p5','5 업무 웹앱',20],['p6','마무리',10]];
 const slides=$$('.slide');const N=slides.length;
 let cur=0;
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800)}
@@ -597,6 +660,11 @@ document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2')
 const md=[['2027. 3. 1.자 정기 전보 안내','교직원 회의 · 12월 첫째 주'],['기준일은 2027년 2월 28일','월 단위로 계산하고, 1개월 미만은 버립니다.'],['같은 학교 5년이면 만기','만기 유예는 교육과정 운영상 꼭 필요할 때만 1년 범위에서.'],['희망 전보는 2년부터, 5개교까지','올해부터 지망 학교가 3개교에서 5개교로 늘었습니다.'],['내신서는 12월 11일(금)까지','온라인으로만 받고, 학교는 12월 18일까지 제출합니다.'],['궁금한 점은 교무실로','문의: 교무실 내선 201']];
 let mi=0;function drawM(){$('#mdeck').innerHTML='<h4>'+md[mi][0]+'</h4><p>'+md[mi][1]+'</p><span class="pg">'+(mi+1)+' / '+md.length+'</span>'}
 $('#mPrev').onclick=()=>{mi=Math.max(0,mi-1);drawM()};$('#mNext').onclick=()=>{mi=Math.min(md.length-1,mi+1);drawM()};drawM();
+
+/* 모션그래픽 */
+const mgS=$$('#mg .sc');let mgI=0;
+function mgGo(){mgS.forEach((x,j)=>x.classList.toggle('on',j===mgI));$('#mgNo').textContent=(mgI+1)+' / '+mgS.length;const b=$('#mgBar');b.classList.remove('run');void b.offsetWidth;b.classList.add('run');mgI=(mgI+1)%mgS.length}
+mgGo();setInterval(()=>{if(slides[cur]&&slides[cur].contains($('#mg')))mgGo()},3500);
 
 /* 퀴즈 */
 const qs=[['근무기간을 계산하는 기준일은 2027년 3월 1일이다.','X','기준일은 2027. 2. 28.입니다. 3월 1일은 전보 발령일입니다.'],['같은 학교에서 5년 이상 근무한 교원은 만기 전보 대상이다.','O','동일 학교 근무기간이 5년 이상인 교원이 만기 전보 대상입니다.'],['희망 전보는 현 학교에서 1년만 근무해도 신청할 수 있다.','X','희망 전보는 동일 학교 근무기간이 2년 이상이어야 합니다.'],['근무기간 중 1개월 미만은 1개월로 올려서 계산한다.','X','1개월 미만의 기간은 버립니다.'],['올해부터 희망 전보 지망 학교를 5개교까지 쓸 수 있다.','O','지망 학교가 3개교에서 5개교로 늘었습니다.']];
