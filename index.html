@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>관리자 AI 실습 키트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: 관리자 연수용 16:9 발표 겸 실습 화면
+   IDEA 대화형 AI 채팅 화면: 왼쪽 사이드바가 목차, 프롬프트는 회색 말풍선, 결과는 답변처럼
+   PICTURE 단계마다 실제로 작동하는 완성본(카드뉴스·슬라이드·퀴즈·계산기)과 말풍선
+   COLOUR 흰 바탕, 거의 검정 글자, 회색 말풍선 #f4f4f4, 검정 알약 버튼, 완료만 초록
+   TYPE Noto Sans KR 하나로 굵기 대비
+   LAYOUT 1920×1080 무대를 화면에 맞춰 축소, 사이드바 340 + 본문 2열(설명 5 : 채팅 7) */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#212121);--side:light-dark(#f9f9f9,#171717);--ink:light-dark(#0d0d0d,#ececec);--mut:light-dark(#5d5d5d,#b4b4b4);--bub:light-dark(#f4f4f4,#303030);--line:light-dark(#e5e5e5,#3a3a3a);--hov:light-dark(#ececec,#2f2f2f);--btn:light-dark(#0d0d0d,#f4f4f4);--btnk:light-dark(#ffffff,#0d0d0d);--ok:#10a37f;--red:light-dark(#d93025,#ff6b5e);--out:light-dark(#e8e8e8,#0b0b0b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{height:100%;margin:0;overflow:hidden}
+body{background:var(--out);color:var(--ink);font:28px/1.55 "Noto Sans KR",ui-sans-serif,system-ui,sans-serif}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;background:var(--bg);display:grid;grid-template-columns:340px minmax(0,1fr);overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+#stage.noside{grid-template-columns:minmax(0,1fr)}
+#stage.noside .side{display:none}
+.side{background:var(--side);padding:28px 18px;display:flex;flex-direction:column;gap:6px;font-size:22px;border-right:1px solid var(--line)}
+.side .new{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;font-weight:500;cursor:pointer;margin-bottom:18px}
+.side .new:hover,.si:hover{background:var(--hov)}
+.side .cap{font-size:18px;color:var(--mut);padding:8px 14px}
+.si{display:flex;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:12px;cursor:pointer;align-items:center}
+.si.on{background:var(--hov);font-weight:500}
+.si small{font-size:17px;color:var(--mut);white-space:nowrap}
+.me{margin-top:auto;display:flex;gap:12px;align-items:center;padding:12px 14px;font-size:20px}
+.av{width:44px;height:44px;border-radius:50%;background:var(--btn);color:var(--btnk);display:grid;place-items:center;font-weight:700;font-size:20px}
+.main{display:grid;grid-template-rows:84px minmax(0,1fr);min-height:0}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:0 40px;font-size:24px}
+.bar b{font-weight:500}.bar span{color:var(--mut);margin-left:12px}
+.slides{position:relative;min-height:0}
+.slide{position:absolute;inset:0;display:none;padding:24px 96px 110px}
+.slide.on{display:block}
+.two{display:grid;grid-template-columns:5fr 7fr;gap:72px;height:100%;align-items:center}
+.full{height:100%;display:flex;flex-direction:column;justify-content:center;gap:28px}
+.k{font-size:22px;color:var(--mut);margin:0 0 10px}
+h1,h2,h3,h4{margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1{font-size:76px;line-height:1.12;font-weight:700}
+h2{font-size:54px;line-height:1.15;font-weight:700;margin-bottom:22px}
+h3{font-size:30px;font-weight:700;margin-bottom:12px}
+p{margin:0 0 18px}
+.d{color:var(--mut);font-size:27px}
+.plus{display:inline-block;background:var(--btn);color:var(--btnk);border-radius:999px;padding:4px 18px;font-size:22px;font-weight:500;margin-right:8px}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 16px;font-size:21px;margin:0 6px 8px 0;white-space:nowrap}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+.pill{font:inherit;font-size:22px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:10px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.pill:hover{background:var(--hov)}
+.pill.dark{background:var(--btn);color:var(--btnk);border-color:var(--btn)}
+.done-b.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.chat{display:flex;flex-direction:column;gap:18px;justify-content:center;max-height:100%}
+.u{align-self:flex-end;max-width:94%;background:var(--bub);border-radius:30px;padding:20px 30px;font-size:28px;white-space:pre-wrap}
+.att{align-self:flex-end;display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px 20px 12px 12px;font-size:21px}
+.att i{width:48px;height:48px;border-radius:10px;background:#ff5588;display:grid;place-items:center;font-style:normal}
+.att b{display:block;font-weight:500}.att small{color:var(--mut);font-size:18px}
+.acts{align-self:flex-end;display:flex;gap:8px;margin-top:-6px}
+.cp{font:inherit;font-size:20px;color:var(--mut);background:none;border:0;border-radius:10px;padding:8px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.cp:hover{background:var(--hov);color:var(--ink)}
+.cp.ok{color:var(--ok)}
+.a{font-size:25px;line-height:1.6}
+.a p{margin:0 0 12px}
+.a table,.tb{border-collapse:collapse;width:100%;font-size:23px}
+th,td{border-bottom:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+th{font-weight:500;color:var(--mut);font-size:20px}
+.nw{white-space:nowrap}
+.note{font-size:22px;color:var(--mut);border-left:4px solid var(--line);padding-left:16px;margin:14px 0}
+.note.r{border-left-color:var(--red)}
+.doc{border:1px solid var(--line);border-radius:20px;padding:28px 34px;height:820px;overflow:auto;background:var(--bg)}
+.doc pre{margin:0;white-space:pre-wrap;font:22px/1.7 "Noto Sans KR",sans-serif}
+.smp{font-size:19px;color:var(--red)}
+.composer{width:1100px;max-width:100%;border:1px solid var(--line);border-radius:999px;padding:16px 16px 16px 36px;display:flex;align-items:center;gap:18px;box-shadow:0 8px 28px rgba(0,0,0,.08);font-size:30px;margin:40px auto 0}
+.composer .t{flex:1;text-align:left}
+.send{width:64px;height:64px;border-radius:50%;background:var(--btn);color:var(--btnk);display:grid;place-items:center;flex:none}
+.ladder{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;align-items:end;height:560px}
+.ladder div{border-radius:22px 22px 0 0;padding:20px;background:var(--bub);display:flex;flex-direction:column}
+.ladder b{font-size:28px}.ladder span{font-size:20px;color:var(--mut)}
+.ladder div:last-child{background:var(--btn);color:var(--btnk)}.ladder div:last-child span{color:inherit;opacity:.75}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+.boxc{border:1px solid var(--line);border-radius:24px;padding:32px}
+.boxc ul{list-style:none;margin:0;padding:0}.boxc li{padding:8px 0}
+.boxc label{display:flex;gap:14px;align-items:center;cursor:pointer}
+.boxc input{width:28px;height:28px;accent-color:var(--ok)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.card{aspect-ratio:1;border-radius:28px;padding:32px;display:flex;flex-direction:column;justify-content:space-between;background:var(--btn);color:var(--btnk)}
+.card:nth-child(2),.card:nth-child(3){background:var(--bub);color:var(--ink)}
+.card small{font-size:20px;opacity:.7}.card h4{font-size:34px;line-height:1.25}.card p{font-size:22px;margin:0;opacity:.85}
+.mdeck{aspect-ratio:16/9;background:var(--btn);color:var(--btnk);border-radius:24px;padding:56px;display:flex;flex-direction:column;justify-content:center;gap:16px;position:relative}
+.mdeck h4{font-size:48px;line-height:1.2}.mdeck p{font-size:26px;opacity:.8;margin:0}
+.mdeck .pg{position:absolute;right:28px;bottom:20px;font-size:20px;opacity:.6}
+.qz{max-width:1240px;margin:0 auto;width:100%;border:1px solid var(--line);border-radius:32px;padding:48px 56px}
+.qz .q{font-size:44px;font-weight:700;line-height:1.35;margin:10px 0 32px;min-height:120px}
+.ox{display:flex;gap:24px}
+.ox button{flex:1;font:700 80px/1 "Noto Sans KR",sans-serif;height:150px;border-radius:28px;border:1px solid var(--line);background:var(--bub);color:var(--ink);cursor:pointer}
+.ox button:hover{background:var(--hov)}
+.fb{margin-top:24px;padding:20px 26px;border-radius:20px;font-size:26px;display:none}
+.fb.y{display:block;background:color-mix(in srgb,var(--ok) 16%,var(--bg))}.fb.n{display:block;background:color-mix(in srgb,var(--red) 14%,var(--bg))}
+.qrow{display:flex;justify-content:space-between;align-items:center;font-size:24px;color:var(--mut)}
+.calc{display:grid;grid-template-columns:420px minmax(0,1fr);gap:56px;align-items:start}
+.big{font-size:96px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.big.r{color:var(--red)}.big.g{color:var(--ok)}
+.set label{display:block;font-size:20px;color:var(--mut);margin:16px 0 6px}
+input,textarea{font:inherit;font-size:22px;padding:10px 14px;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);width:100%}
+.ct td{font-size:22px;vertical-align:middle}
+.ct input{font-size:21px;padding:6px 10px}
+.hot{color:var(--red);font-weight:700}.yes{color:var(--ok);font-weight:700}.no{color:var(--mut)}
+.del{white-space:nowrap;font:inherit;font-size:19px;border:0;background:none;color:var(--mut);cursor:pointer;padding:6px 10px;border-radius:8px}.del:hover{background:var(--hov)}
+#ink{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none;z-index:5}
+#stage.pen #ink{pointer-events:auto;cursor:crosshair}
+#laser{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#ff2d2d;box-shadow:0 0 18px 8px rgba(255,45,45,.55);pointer-events:none;z-index:6;display:none}
+#stage.laser,#stage.laser *{cursor:none!important}
+/* 편집 모드 */
+body.editing [data-ek]{outline:2px dashed color-mix(in srgb,var(--ok) 60%,transparent);outline-offset:4px;border-radius:6px;cursor:text}
+body.editing [data-ek]:focus{outline:3px solid var(--ok)}
+/* 발표 도구 (화면 고정) */
+.tb-wrap{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;transition:opacity .3s}
+.tb-wrap.idle{opacity:0}
+.tools{display:flex;align-items:center;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 8px 30px rgba(0,0,0,.14);font-size:15px}
+.tools button{font:inherit;font-size:15px;min-width:40px;height:40px;border:0;border-radius:999px;background:none;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap}
+.tools button:hover{background:var(--hov)}
+.tools button.on{background:var(--btn);color:var(--btnk)}
+.tools .sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+.tools .pg{font-variant-numeric:tabular-nums;color:var(--mut);padding:0 6px;min-width:64px;text-align:center}
+#tmr.late{color:var(--red)}
+.tools svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pop{position:fixed;left:50%;bottom:76px;transform:translateX(-50%);background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.18);z-index:21;display:none;font-size:16px;width:min(560px,94vw)}
+.pop.on{display:block}
+.pop .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pop button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}
+.pop button:hover{background:var(--hov)}
+.pop .bigt{font-size:40px;font-weight:700;font-variant-numeric:tabular-nums}
+.ov{position:fixed;inset:0;background:color-mix(in srgb,var(--bg) 94%,transparent);z-index:30;display:none;padding:40px max(4vw,16px);overflow:auto;font-size:16px}
+.ov.on{display:block}
+.ov h3{font-size:22px;margin-bottom:16px}
+.ovg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.ovg button{font:inherit;font-size:15px;text-align:left;aspect-ratio:16/9;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink);padding:12px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+.ovg button:hover,.ovg button.on{border-color:var(--ink)}
+.ovg small{color:var(--mut)}
+.eb{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:22;display:none;gap:6px;align-items:center;background:var(--btn);color:var(--btnk);border-radius:999px;padding:6px 6px 6px 18px;font-size:15px;box-shadow:0 8px 30px rgba(0,0,0,.2);flex-wrap:wrap;max-width:96vw}
+body.editing .eb{display:flex}
+.eb button{font:inherit;font-size:14px;border:0;border-radius:999px;padding:8px 14px;background:color-mix(in srgb,var(--btnk) 16%,transparent);color:var(--btnk);cursor:pointer}
+.eb button:hover{background:color-mix(in srgb,var(--btnk) 28%,transparent)}
+.toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);background:var(--btn);color:var(--btnk);padding:10px 18px;border-radius:999px;font-size:15px;z-index:40;display:none}
+.toast.on{display:block}
+button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-offset:2px}
+.who{display:flex;gap:12px;align-items:center;font-size:22px;color:var(--mut);margin-bottom:6px}
+.who input{width:340px;font-size:22px;padding:8px 14px}
+.live{font-size:20px;color:var(--mut)}
+.live b{color:var(--ok)}
+.res{position:fixed;inset:0;z-index:30;background:var(--bg);display:none;flex-direction:column;font-size:18px}
+.res.on{display:flex}
+.res header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:16px max(3vw,16px);border-bottom:1px solid var(--line)}
+.res header h3{font-size:24px;margin:0}
+.res .tabs{display:flex;gap:6px;flex-wrap:wrap}
+.res .tabs button,.res .act button{font:inherit;font-size:16px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 16px;cursor:pointer}
+.res .tabs button.on{background:var(--btn);color:var(--btnk);border-color:var(--btn)}
+.res .act{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.res .body{flex:1;overflow:auto;padding:24px max(3vw,16px)}
+.res .st{font-size:15px;color:var(--mut)}
+.kpi{display:flex;flex-wrap:wrap;gap:40px;margin-bottom:24px}
+.kpi div{font-size:16px;color:var(--mut)}.kpi b{display:block;font-size:48px;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.qbar{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,34%) 70px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:19px}
+.qbar .tr{height:22px;background:var(--bub);border-radius:999px;overflow:hidden}.qbar .tr i{display:block;height:100%;background:var(--ok);border-radius:999px}
+.qbar .pc{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.qbar small{display:block;color:var(--mut);font-size:14px}
+.rank{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:20px}
+.rank div{border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;gap:10px;font-size:18px}
+.rank b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.tasks div{background:var(--bub);border-radius:20px;padding:18px 20px;font-size:20px;line-height:1.5;white-space:pre-wrap}
+.tasks small{display:block;color:var(--mut);font-size:15px;margin-top:8px}
+.cfg{margin-top:28px;border-top:1px solid var(--line);padding-top:18px;font-size:15px;color:var(--mut)}
+.cfg input{font-size:15px;margin-top:6px}
+@media(prefers-reduced-motion:reduce){.tb-wrap{transition:none}}
+</style>
+<script src="config.js"></script>
+</head>
+<body>
+<div id="stage">
+  <aside class="side">
+    <div class="new" id="home"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span data-ek>관리자 AI 실습 키트</span></div>
+    <div class="cap">오늘의 순서</div>
+    <div id="toc"></div>
+    <div class="me"><div class="av">심</div><div><div data-ek>심훈철</div><div style="font-size:17px;color:var(--mut)" data-ek>강사 · 안성지역 관리자 연수</div></div></div>
+  </aside>
+  <div class="main">
+    <div class="bar"><div><b id="bSec"></b><span id="bTitle"></span></div><div id="bPg" style="color:var(--mut);font-variant-numeric:tabular-nums"></div></div>
+    <div class="slides" id="slides">
+
+<!-- 1 표지 -->
+<section class="slide" data-sec="start" data-t="표지"><div class="full" style="text-align:center;align-items:center">
+  <p class="k">안성지역 교감·교장 연수 · 2시간 실습</p>
+  <h1>AI로 돕는 학교 업무<br>딸각부터 웹앱까지</h1>
+  <div class="composer"><span style="font-size:40px;color:var(--mut)">+</span><span class="t" data-ek>위 내용을 요약해줘.</span><span class="send"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span></div>
+  <p class="d" style="margin-top:36px">공문 하나로, 프롬프트에 한 줄씩 더해 갑니다 · 강사 심훈철</p>
+</div></section>
+
+<!-- 2 계단 -->
+<section class="slide" data-sec="start" data-t="오늘의 계단"><div class="full">
+  <h2>공문 하나로, 한 칸씩 올라갑니다</h2>
+  <div class="ladder">
+    <div style="height:24%"><b>딸각</b><span>붙여넣고 "요약해줘"</span></div>
+    <div style="height:38%"><b>+대상</b><span>교장 보고용 3줄</span></div>
+    <div style="height:52%"><b>+이미지</b><span>카드뉴스·포스터</span></div>
+    <div style="height:66%"><b>+HTML</b><span>회의 발표 자료</span></div>
+    <div style="height:82%"><b>+상호작용</b><span>OX 퀴즈</span></div>
+    <div style="height:100%"><b>+기능</b><span>근무기간 계산기</span></div>
+  </div>
+  <p class="d">단계마다 완성본을 먼저 보고 → 복사해서 붙여넣고 → 끝나면 완료를 누릅니다.</p>
+</div></section>
+
+<!-- 3 준비 -->
+<section class="slide" data-sec="start" data-t="준비"><div class="full">
+  <h2>시작 전에 세 가지</h2>
+  <div class="cols3">
+    <div class="boxc"><h3>도구 열기</h3><p class="d" style="font-size:22px">새 탭으로 열어 두세요.</p>
+      <div class="grid2"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><a class="pill" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a></div></div>
+    <div class="boxc"><h3>로그인 확인</h3><ul>
+      <li><label><input type="checkbox" data-k="l1"> Claude</label></li>
+      <li><label><input type="checkbox" data-k="l2"> ChatGPT</label></li>
+      <li><label><input type="checkbox" data-k="l3"> Gemini (구글 계정)</label></li>
+      <li><label><input type="checkbox" data-k="l4"> NotebookLM (같은 계정)</label></li></ul></div>
+    <div class="boxc"><h3>보안 3원칙</h3><ul>
+      <li>1. 실명·개인정보는 넣지 않습니다.</li>
+      <li>2. 내부 문서는 발췌·가공해서 넣습니다.</li>
+      <li>3. AI 답은 원문으로 확인합니다.</li></ul></div>
+  </div>
+</div></section>
+
+<!-- 4 자료 -->
+<section class="slide" data-sec="p1" data-t="실습 자료"><div class="two">
+  <div><p class="k">1단계 · 25분</p><h2>업무·보고서</h2>
+    <p class="d">공문을 붙여넣고 "요약해줘"부터 시작합니다. 요청에 대상과 형식을 한 줄씩 더하면 결과가 어떻게 달라지는지 봅니다.</p>
+    <p><span class="tag">Claude</span><span class="tag">ChatGPT</span><span class="tag">Gemini</span><span class="tag">NotebookLM</span></p>
+    <div class="links"><button class="pill dark cp2" data-t="doc">자료 복사</button></div>
+    <p class="smp" style="margin-top:18px">실습용 가상 자료입니다. 실제 기준은 인사업무 처리 요령 최신판을 확인하세요.</p></div>
+  <div class="doc"><pre id="doc" data-ek>2027. 3. 1.자 초등 교원 정기 전보 업무 안내 (연수 실습용 가상 자료)
+※ 이 자료는 AI 실습을 위해 만든 가상 자료로, 실제 전보 기준과 다릅니다.
+
+1. 목적
+  교원의 적정 배치와 학교 간 균형 있는 인력 운영을 위하여 2027. 3. 1.자 정기 전보를 실시한다.
+
+2. 근무기간 산정
+  가. 기준일: 2027. 2. 28.
+  나. 현임교 근무기간은 현 학교 발령일부터 기준일까지로 하며, 월 단위로 계산한다.
+  다. 1개월 미만의 기간은 버린다.
+  라. 휴직 기간은 근무기간에 포함한다.
+
+3. 전보 유형
+  가. 만기 전보: 동일 학교 근무기간이 5년 이상인 교원
+  나. 희망 전보: 동일 학교 근무기간이 2년 이상인 교원 중 전보를 희망하는 교원
+  다. 만기 유예: 학교 교육과정 운영상 꼭 필요한 경우 학교장이 1년 범위에서 유예를 신청할 수 있다.
+
+4. 추진 일정
+  가. 전보 대상자 안내(학교 → 교원): 2026. 12. 1.(화) ~ 12. 4.(금)
+  나. 내신서 작성·제출(교원 → 학교): 2026. 12. 7.(월) ~ 12. 11.(금)
+  다. 학교 확인 후 교육지원청 제출: 2026. 12. 14.(월) ~ 12. 18.(금)
+  라. 전보 발표: 2027. 2. 중순 예정
+
+5. 올해 달라진 점
+  가. 내신서 제출을 온라인 시스템으로 일원화한다(종이 내신서 폐지).
+  나. 희망 전보 지망 학교를 3개교에서 5개교로 늘린다.
+  다. 만기 유예 신청 사유를 '교육과정 운영상 필요'로 한정한다.
+
+6. 학교 확인 사항(교감)
+  가. 전보 대상자 명단과 근무기간이 맞는지 확인한다.
+  나. 기간 내 내신서 제출을 안내하고 미제출자를 확인한다.
+  다. 내신서의 개인정보가 외부로 나가지 않도록 관리한다.
+
+7. 문의: 교육지원청 초등교육지원과 인사 담당</pre></div>
+</div></section>
+
+<!-- 5 1-1 -->
+<section class="slide" data-sec="p1" data-t="1-1 딸각"><div class="two">
+  <div><p class="k">1-1</p><h2>딸각: 붙여넣고 요약하기</h2>
+    <p class="d">자료와 요청이 한 번에 복사됩니다. 세 AI에 똑같이 붙여넣고 결과를 비교해 보세요.</p>
+    <div class="links"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a></div>
+    <div class="links" style="margin-top:22px"><button class="pill done-b" data-k="p1-1">완료</button></div></div>
+  <div class="chat">
+    <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
+    <div class="u" id="u11" data-ek>위 내용을 요약해줘.</div>
+    <div class="acts"><button class="cp" data-t="u11" data-doc="1">⧉ 자료 + 요청 복사</button></div>
+    <p class="note">세 AI의 길이, 순서, 빠뜨린 내용이 어떻게 다른가요?</p>
+  </div>
+</div></section>
+
+<!-- 6 1-2 -->
+<section class="slide" data-sec="p1" data-t="1-2 +대상"><div class="two">
+  <div><p class="k">1-2</p><h2><span class="plus">+대상</span><br>교장선생님 보고용으로</h2>
+    <p class="d">같은 대화창에 이어서 넣습니다. 누가 읽을지, 얼마나 짧게, 어떤 모양으로를 더했습니다.</p>
+    <div class="links"><button class="pill done-b" data-k="p1-2">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u12" data-ek>교장선생님께 보고할 거야. 핵심만 3줄로 요약하고, 일정은 표로 정리해줘.</div>
+    <div class="acts"><button class="cp" data-t="u12">⧉ 복사</button></div>
+    <div class="a">
+      <p data-ek>1. 2027. 3. 1.자 정기 전보는 근무기간 기준일 2027. 2. 28.로 진행됩니다.<br>2. 동일 학교 5년 이상은 만기, 2년 이상은 희망 전보 대상이며 희망 지망이 5개교로 늘었습니다.<br>3. 내신서는 온라인으로만 받으며, 학교는 12. 18.까지 교육지원청에 제출합니다.</p>
+      <table><thead><tr><th>일정</th><th>내용</th></tr></thead><tbody><tr><td class="nw" data-ek>12. 1.~12. 4.</td><td data-ek>대상자 안내</td></tr><tr><td class="nw" data-ek>12. 7.~12. 11.</td><td data-ek>교원 내신서 제출</td></tr><tr><td class="nw" data-ek>12. 14.~12. 18.</td><td data-ek>교육지원청 제출</td></tr><tr><td class="nw" data-ek>2월 중순</td><td data-ek>전보 발표</td></tr></tbody></table>
+    </div>
+  </div>
+</div></section>
+
+<!-- 7 1-3 -->
+<section class="slide" data-sec="p1" data-t="1-3 +형식"><div class="two">
+  <div><p class="k">1-3</p><h2><span class="plus">+형식</span><br>행정 문서 초안으로</h2>
+    <p class="d">요약을 넘어 바로 보낼 수 있는 글로 바꿉니다. 말투, 강조, 분량을 정해 줍니다.</p>
+    <div class="links"><button class="pill done-b" data-k="p1-3">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u13" data-ek>이 내용을 교직원 메신저로 보낼 안내문 초안으로 써줘. 정중한 말투로, 제출 기한은 굵게, 300자 이내로.</div>
+    <div class="acts"><button class="cp" data-t="u13">⧉ 복사</button></div>
+    <div class="a"><p data-ek>선생님들께 안내드립니다.<br>2027. 3. 1.자 정기 전보 내신서를 <b>12월 11일(금)까지</b> 온라인 시스템으로 제출해 주시기 바랍니다. 올해부터 종이 내신서는 받지 않으며, 희망 전보 지망 학교는 5개교까지 쓸 수 있습니다. 동일 학교 5년 이상 근무하신 선생님은 만기 전보 대상입니다. 궁금한 점은 교무실로 문의해 주세요. 감사합니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 8 1-4a -->
+<section class="slide" data-sec="p1" data-t="1-4 자료 없이 묻기"><div class="two">
+  <div><p class="k">1-4</p><h2>먼저, 자료 없이 물어보면?</h2>
+    <p class="d">ChatGPT에서 새 채팅을 열고 자료 없이 질문해 보세요.</p>
+    <div class="links"><a class="pill" href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT 새 채팅</a></div></div>
+  <div class="chat">
+    <div class="u" id="u14" data-ek>경기도 초등 교원 전보에서 동일 학교 만기는 몇 년이고, 근무기간은 언제까지 계산해?</div>
+    <div class="acts"><button class="cp" data-t="u14">⧉ 복사</button></div>
+    <div class="a"><p class="note r" data-ek>그럴듯한 답이 나옵니다. 그런데 그 근거는 어디에 있을까요? 올해 기준이 맞을까요?</p></div>
+  </div>
+</div></section>
+
+<!-- 9 1-4b -->
+<section class="slide" data-sec="p1" data-t="1-4 NotebookLM"><div class="two">
+  <div><p class="k">1-4</p><h2>NotebookLM: 자료를 주고 묻기</h2>
+    <ol class="d" style="padding-left:1.2em;margin:0 0 18px">
+      <li data-ek>새 노트북 만들기</li><li data-ek>소스 추가 → <b>복사된 텍스트</b></li><li data-ek>실습 자료 붙여넣기</li><li data-ek>질문하고, 답의 번호를 눌러 근거 확인</li></ol>
+    <div class="links"><button class="pill cp2" data-t="doc">자료 복사</button><a class="pill" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a><button class="pill done-b" data-k="p1-4">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u15" data-ek>2022년 9월 1일에 지금 학교로 온 선생님은 기준일에 근무기간이 얼마나 되고, 어떤 전보를 신청할 수 있어?</div>
+    <div class="acts"><button class="cp" data-t="u15">⧉ 복사</button></div>
+    <div class="u" id="u16" data-ek>교감이 12월에 챙겨야 할 일을 날짜순으로 정리해줘.</div>
+    <div class="acts"><button class="cp" data-t="u16">⧉ 복사</button></div>
+    <div class="u" id="u17" data-ek>올해 달라진 점 3가지를 작년과 비교해서 설명해줘.</div>
+    <div class="acts"><button class="cp" data-t="u17">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 10 2-1 -->
+<section class="slide" data-sec="p2" data-t="2-1 카드뉴스"><div class="two">
+  <div><p class="k">2단계 · 20분</p><h2>안내·홍보 자료</h2>
+    <p class="d">1단계 대화창에 이어서 넣습니다. 장 수와 줄 수를 정해 주면 바로 쓸 수 있는 문구가 나옵니다.</p>
+    <div class="chat" style="margin-top:10px">
+      <div class="u" id="u21" data-ek>이 전보 안내를 교직원용 카드뉴스 4장으로 만들 거야. 장마다 제목 1줄, 본문 2줄 이내로 문구를 써줘.</div>
+      <div class="acts"><button class="cp" data-t="u21">⧉ 복사</button><button class="pill done-b" data-k="p2-1">완료</button></div></div></div>
+  <div><div class="cards">
+    <div class="card"><small>1/4</small><h4 data-ek>2027. 3. 1.자 정기 전보, 이렇게 진행합니다</h4><p data-ek>내신서는 올해부터 온라인으로만 받습니다.</p></div>
+    <div class="card"><small>2/4</small><h4 data-ek>기준일은 2027. 2. 28.</h4><p data-ek>월 단위로 계산하고, 1개월 미만은 버립니다.</p></div>
+    <div class="card"><small>3/4</small><h4 data-ek>5년이면 만기, 2년부터 희망</h4><p data-ek>희망 지망은 5개교까지 쓸 수 있습니다.</p></div>
+    <div class="card"><small>4/4</small><h4 data-ek>12. 11.(금)까지 제출</h4><p data-ek>학교는 12. 18.까지 교육지원청에 제출합니다.</p></div>
+  </div><p class="smp" style="margin-top:12px">완성본 예시 · 실습용 가상 내용</p></div>
+</div></section>
+
+<!-- 11 2-2 -->
+<section class="slide" data-sec="p2" data-t="2-2 +이미지"><div class="two">
+  <div><p class="k">2-2 · 2-3</p><h2><span class="plus">+이미지</span><br>포스터 배경 만들기</h2>
+    <p class="d">Gemini 새 채팅에 넣습니다. AI 이미지는 한글이 자주 깨지니, 글자 없는 배경만 만들고 글자는 캔바에서 얹습니다.</p>
+    <div class="links"><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><a class="pill" href="https://www.canva.com" target="_blank" rel="noopener">캔바</a><button class="pill done-b" data-k="p2-2">완료</button></div>
+    <p class="note" data-ek>강사 시연: 같은 이미지를 15초 안내 영상으로 바꾸는 과정은 화면으로만 보여드립니다.</p></div>
+  <div class="chat">
+    <div class="u" id="u22" data-ek>교무실 게시판에 붙일 안내 포스터 배경 이미지를 만들어줘. 햇빛이 드는 초등학교 복도, 따뜻하고 차분한 분위기, 세로 비율, 위쪽 3분의 1은 글자를 얹을 수 있게 비워두고, 글자는 넣지 마.</div>
+    <div class="acts"><button class="cp" data-t="u22">⧉ 복사</button></div>
+    <p class="k" style="align-self:flex-end;margin:10px 0 0">보너스: 우리 학교 행사로 바꾸기</p>
+    <div class="u" id="u23" data-ek>방금 만든 카드뉴스 형식 그대로, 12월 19일(토) 학예발표회 학부모 안내로 바꿔줘. 시간, 장소, 주차 안내를 넣어줘.</div>
+    <div class="acts"><button class="cp" data-t="u23">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 12 3-1 -->
+<section class="slide" data-sec="p3" data-t="3-1 +HTML"><div class="two">
+  <div><p class="k">3단계 · 15분</p><h2><span class="plus">+HTML</span><br>회의 발표 자료</h2>
+    <div class="chat">
+      <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
+      <div class="u" id="u31" data-ek>위 전보 안내 내용을 교직원 회의 화면에 띄울 HTML 발표 자료로 만들어줘. 6장, 키보드 방향키로 넘기기, 큰 글씨, 장마다 핵심 한 문장만.</div>
+      <div class="acts"><button class="cp" data-t="u31" data-doc="1">⧉ 자료 + 요청 복사</button><button class="pill done-b" data-k="p3-1">완료</button></div></div>
+    <p class="note" data-ek>Gemini는 입력창 아래 도구에서 Canvas를 켜면 미리보기가 열립니다.</p></div>
+  <div class="widget"><div class="mdeck" id="mdeck"></div>
+    <div class="links" style="justify-content:space-between;align-items:center"><span class="smp">완성본 예시 · 실습용 가상 내용</span><span><button class="pill" id="mPrev">← 이전</button> <button class="pill" id="mNext">다음 →</button></span></div></div>
+</div></section>
+
+<!-- 13 3-2 -->
+<section class="slide" data-sec="p3" data-t="3-2 말로 고치기"><div class="two">
+  <div><p class="k">3-2</p><h2>직접 고치지 말고,<br>말로 고칩니다</h2>
+    <p class="d">마음에 안 드는 곳은 한 번에 하나씩 부탁하면 잘 고쳐집니다.</p>
+    <p class="note" data-ek>Claude는 결과 화면에서 전체 화면 보기와 공유, Gemini Canvas는 공유 버튼으로 링크를 만들 수 있습니다.</p>
+    <div class="links"><button class="pill done-b" data-k="p3-2">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u32" data-ek>글자를 더 크게 하고, 색은 짙은 청록과 흰색으로 바꿔줘.</div>
+    <div class="acts"><button class="cp" data-t="u32">⧉ 복사</button></div>
+    <div class="u" id="u33" data-ek>마지막 장에 '문의: 교무실 내선 201'을 넣어줘.</div>
+    <div class="acts"><button class="cp" data-t="u33">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 14 퀴즈 체험 -->
+<section class="slide" data-sec="p4" data-t="퀴즈 체험"><div class="full">
+  <div class="qz widget">
+    <div class="who"><label for="pname">이름 또는 학교</label><input id="pname" class="pname" placeholder="예: 안성초 교감"><span class="live" id="qLive"></span></div>
+    <div class="qrow"><span id="qn">문제 1 / 5</span><span>점수 <b id="qs" style="color:var(--ink)">0</b> / 5</span></div>
+    <div class="q" id="qq"></div>
+    <div class="ox"><button id="bo">O</button><button id="bx">X</button></div>
+    <div class="fb" id="fb"></div>
+    <div class="qrow" style="margin-top:24px"><span class="smp">실습 자료 기준 문항입니다</span><span><button class="pill showres" data-tab="quiz">참여 결과</button> <button class="pill" id="qr">처음부터</button> <button class="pill dark" id="qnx">다음 문제</button></span></div>
+  </div>
+</div></section>
+
+<!-- 15 4-1 -->
+<section class="slide" data-sec="p4" data-t="4-1 +상호작용"><div class="two">
+  <div><p class="k">4단계 · 10분</p><h2><span class="plus">+상호작용</span><br>발표 자료에 퀴즈 붙이기</h2>
+    <p class="d">3단계에서 발표 자료를 만든 대화창에 이어서 넣습니다.</p>
+    <p class="note" data-ek>문항이 자료와 맞는지 꼭 확인하세요. NotebookLM에 "이 문항의 근거가 어디 있어?"라고 물으면 빠릅니다.</p>
+    <div class="links"><button class="pill done-b" data-k="p4-1">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u41" data-ek>방금 만든 발표 자료 마지막에 OX 퀴즈 5문항을 추가해줘. O나 X를 누르면 정답과 근거 문장이 나오게 해줘.</div>
+    <div class="acts"><button class="cp" data-t="u41">⧉ 복사</button></div>
+    <div class="u" id="u42" data-ek>팀별 점수판을 추가해줘. 1팀부터 4팀까지, 버튼으로 점수를 올리고 내릴 수 있게.</div>
+    <div class="acts"><button class="cp" data-t="u42">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 16 계산기 -->
+<section class="slide" data-sec="p5" data-t="계산기 체험"><div class="full">
+  <div><p class="k">5단계 · 25분 · 완성본 먼저 써 보기</p><h2 style="margin-bottom:8px">근무기간·만기 계산기</h2></div>
+  <div class="calc widget">
+    <div class="set">
+      <div class="big r" id="sA">0명</div><div style="font-size:22px">만기 전보 대상</div>
+      <div class="big g" id="sB" style="margin-top:20px">0명</div><div style="font-size:22px">희망 전보 신청 가능</div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <div style="grid-column:1/-1"><label for="cBase">기준일</label><input type="date" id="cBase" value="2027-02-28"></div>
+        <div><label for="cMax">만기(년)</label><input type="number" id="cMax" value="5" min="1" max="10"></div>
+        <div><label for="cMin">희망(년)</label><input type="number" id="cMin" value="2" min="0" max="10"></div>
+      </div>
+    </div>
+    <div>
+      <table class="tb ct"><thead><tr><th>이름 (가상)</th><th>현임교 발령일</th><th>근무기간</th><th>만기</th><th>희망</th><th></th></tr></thead><tbody id="cRows"></tbody></table>
+      <div class="links"><button class="pill" id="cAdd">+ 한 명 추가</button><button class="pill dark" id="cCopy">표 복사 (엑셀에 붙여넣기)</button><button class="pill" id="cReset">예시로 되돌리기</button></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 17 5-1 -->
+<section class="slide" data-sec="p5" data-t="5-1 +기능"><div class="two">
+  <div><p class="k">5-1</p><h2><span class="plus">+기능</span><br>계산기 만들기</h2>
+    <p class="d">새 채팅에 자료와 함께 넣습니다. 무엇을 넣으면 무엇이 나와야 하는지만 말하면 됩니다.</p>
+    <div class="links"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><button class="pill done-b" data-k="p5-1">완료</button></div></div>
+  <div class="chat">
+    <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
+    <div class="u" id="u51" data-ek>위 기준으로 '근무기간·만기 계산기' 웹앱을 만들어줘. 이름과 현 학교 발령일을 넣으면 기준일(2027. 2. 28.)까지 근무기간을 ○년 ○개월로 보여주고, 만기 전보 대상인지, 희망 전보 신청이 가능한지 표시해줘.</div>
+    <div class="acts"><button class="cp" data-t="u51" data-doc="1">⧉ 자료 + 요청 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 18 5-2 -->
+<section class="slide" data-sec="p5" data-t="5-2 바이브 코딩"><div class="two">
+  <div><p class="k">5-2</p><h2>바이브 코딩:<br>말로 기능 더하기</h2>
+    <p class="d">필요한 기능을 하나씩 말로 더합니다. 코드를 몰라도 프로그램이 자랍니다.</p>
+    <div class="links"><button class="pill done-b" data-k="p5-2">완료</button></div></div>
+  <div class="chat">
+    <div class="u" id="u52" data-ek>여러 명을 한 번에 입력해서 표로 볼 수 있게 해줘.</div>
+    <div class="acts"><button class="cp" data-t="u52">⧉ 복사</button></div>
+    <div class="u" id="u53" data-ek>표를 복사해서 엑셀에 바로 붙여넣을 수 있는 '복사' 버튼을 만들어줘.</div>
+    <div class="acts"><button class="cp" data-t="u53">⧉ 복사</button></div>
+    <div class="u" id="u54" data-ek>만기 전보 대상은 빨간색, 희망 전보 가능은 초록색으로 표시해줘.</div>
+    <div class="acts"><button class="cp" data-t="u54">⧉ 복사</button></div>
+  </div>
+</div></section>
+
+<!-- 19 5-3 -->
+<section class="slide" data-sec="p5" data-t="5-3 검증"><div class="two">
+  <div><p class="k">5-3 · 5-4</p><h2>계산이 맞나요?</h2>
+    <p class="d">AI가 만든 계산기도 틀릴 수 있습니다. 같은 사례를 내 계산기, 완성본, NotebookLM에 넣어 맞춰 봅니다.</p>
+    <p class="note" data-ek>강사 시연: 지금 만든 웹앱은 각자 화면에서만 동작합니다. 여러 사람의 입력이 한곳에 모이게 하려면 구글 시트와 연결해야 합니다. 예: 내신서 제출 확인, 연수 신청, 회의실 예약</p>
+    <div class="links"><button class="pill done-b" data-k="p5-3">완료</button></div></div>
+  <div><table class="tb"><thead><tr><th>발령일</th><th>정답 (실습 자료 기준)</th></tr></thead><tbody>
+    <tr><td class="nw" data-ek>2021. 3. 1.</td><td data-ek>6년 0개월 · 만기 대상</td></tr>
+    <tr><td class="nw" data-ek>2022. 9. 1.</td><td data-ek>4년 6개월 · 희망 전보 가능</td></tr>
+    <tr><td class="nw" data-ek>2022. 3. 15.</td><td data-ek>4년 11개월 · 희망 전보 가능 (1개월 미만 버림)</td></tr>
+    <tr><td class="nw" data-ek>2026. 3. 1.</td><td data-ek>1년 0개월 · 희망 전보 불가</td></tr></tbody></table></div>
+</div></section>
+
+<!-- 20 치트시트 -->
+<section class="slide" data-sec="p6" data-t="프롬프트 사다리"><div class="full">
+  <h2 style="margin-bottom:0">오늘 올라온 계단: 자료 위에 한 줄씩</h2>
+  <table class="tb" id="cheat"><thead><tr><th>단계</th><th>더하는 한 줄</th><th>예시</th></tr></thead><tbody>
+    <tr><td class="nw" data-ek>딸각</td><td data-ek>자료 + 요청</td><td data-ek>위 내용을 요약해줘.</td></tr>
+    <tr><td class="nw" data-ek>+대상</td><td data-ek>누가, 얼마나, 어떤 모양</td><td data-ek>교장선생님 보고용으로 3줄, 일정은 표로.</td></tr>
+    <tr><td class="nw" data-ek>+형식</td><td data-ek>문서 종류, 말투, 분량</td><td data-ek>메신저 안내문으로, 정중하게, 300자 이내.</td></tr>
+    <tr><td class="nw" data-ek>+근거</td><td data-ek>자료를 주고 묻기</td><td data-ek>NotebookLM에 자료를 넣고 질문, 근거 번호 확인.</td></tr>
+    <tr><td class="nw" data-ek>+이미지</td><td data-ek>장면, 분위기, 비율, 여백</td><td data-ek>세로 포스터 배경, 위쪽은 비우고 글자는 넣지 마.</td></tr>
+    <tr><td class="nw" data-ek>+HTML</td><td data-ek>HTML로, 장 수, 넘기기</td><td data-ek>HTML 발표 자료 6장, 방향키로 넘기기.</td></tr>
+    <tr><td class="nw" data-ek>+상호작용</td><td data-ek>누르면 무엇이 나오는지</td><td data-ek>OX를 누르면 정답과 근거가 나오게.</td></tr>
+    <tr><td class="nw" data-ek>+기능</td><td data-ek>넣으면 무엇이 나오는지</td><td data-ek>발령일을 넣으면 근무기간과 만기 여부가 나오게.</td></tr>
+  </tbody></table>
+  <div class="links"><button class="pill dark cp2" data-t="cheat">표 복사</button></div>
+</div></section>
+
+<!-- 21 마무리 -->
+<section class="slide" data-sec="p6" data-t="내일 해볼 업무"><div class="two">
+  <div><p class="k">마무리 · 10분</p><h2>내일, 우리 학교에서<br>해볼 업무 하나</h2>
+    <ul class="d" style="padding-left:1.1em"><li data-ek>실명·개인정보는 넣지 않습니다.</li><li data-ek>내부 문서는 발췌·가공해서 넣습니다.</li><li data-ek>AI 답은 원문으로 확인합니다.</li></ul></div>
+  <div class="chat widget">
+    <div class="who" style="align-self:flex-end"><label for="pname2">이름 또는 학교</label><input id="pname2" class="pname" placeholder="예: 안성초 교감"></div>
+    <textarea id="mine" rows="5" placeholder="예: 학교운영위원회 회의록 요약, 방과후 신청 안내문, 교직원 연수 퀴즈" style="border-radius:28px;padding:24px 30px;font-size:26px;background:var(--bub);border:0"></textarea>
+    <div class="acts" style="align-items:center"><span class="live" id="tLive"></span><button class="cp cp2" data-t="mine">⧉ 복사</button><button class="pill showres" data-tab="tasks">모두의 업무 보기</button><button class="pill dark" id="tSend">제출</button></div>
+    <p class="a" style="text-align:right;color:var(--mut)">수고 많으셨습니다.</p>
+  </div>
+</div></section>
+
+    </div>
+  </div>
+  <canvas id="ink" width="1920" height="1080"></canvas>
+  <div id="laser"></div>
+</div>
+
+<div class="eb" id="eb"><span>편집 중 · 테두리가 보이는 글자를 눌러 고치세요 · 자동 저장</span><button id="eSlide">이 장 되돌리기</button><button id="eAll">전체 되돌리기</button><button id="eHtml">HTML 복사</button><button id="eOff">편집 끝내기</button></div>
+
+<div class="tb-wrap" id="tbw"><div class="tools" role="toolbar" aria-label="발표 도구">
+  <button id="tPrev" title="이전 (←)"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <span class="pg" id="tPg">1 / 21</span>
+  <button id="tNext" title="다음 (→)"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+  <span class="sep"></span>
+  <button id="tOv" title="전체 목록 (O)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></button>
+  <button id="tPen" title="펜 (P)"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+  <button id="tHi" title="형광펜 (H)"><svg viewBox="0 0 24 24"><path d="M9 11l-6 6v3h3l6-6"/><path d="M22 7l-5-5-8 8 5 5z"/></svg></button>
+  <button id="tLaser" title="레이저 포인터 (L)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+  <button id="tClr" title="판서 지우기 (C)"><svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>
+  <span class="sep"></span>
+  <button id="tTmr" title="타이머 (T)"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg><span id="tmr">10:00</span></button>
+  <span class="sep"></span>
+  <button id="tRes" title="참여 결과 (R)"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>결과</button>
+  <span class="sep"></span>
+  <button id="tSide" title="사이드바 접기 (S)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg></button>
+  <button id="tEdit" title="편집 (E)"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>편집</button>
+  <button id="tFs" title="전체 화면 (F)"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+</div></div>
+
+<div class="pop" id="tpop">
+  <div style="display:flex;justify-content:space-between;align-items:center"><span class="bigt" id="tBig">10:00</span><span id="tSecHint" style="color:var(--mut)"></span></div>
+  <div class="row"><button data-m="1">1분</button><button data-m="3">3분</button><button data-m="5">5분</button><button data-m="10">10분</button><button data-m="15">15분</button><button data-m="20">20분</button><button data-m="25">25분</button><button id="tSec">이 단계 시간</button></div>
+  <div class="row"><button id="tGo" style="background:var(--btn);color:var(--btnk);border-color:var(--btn)">시작</button><button id="tRst">초기화</button><button id="tClose">닫기</button></div>
+</div>
+
+<div class="ov" id="ov"><h3>전체 목록 · 누르면 이동합니다 (Esc 닫기)</h3><div class="ovg" id="ovg"></div></div>
+<div class="res" id="res" role="dialog" aria-label="참여 결과">
+  <header><h3>참여 결과</h3>
+    <div class="tabs"><button data-rt="quiz" class="on">퀴즈 결과</button><button data-rt="tasks">해볼 업무</button></div>
+    <div class="act"><span class="st" id="rSt"></span><button id="rHide">이름 가리기</button><button id="rSince">지금부터 새로 집계</button><button id="rAll">전체 보기</button><button id="rClose">닫기 (Esc)</button></div></header>
+  <div class="body"><div id="rBody"></div>
+    <div class="cfg"><label for="apiUrl">결과 저장소 주소 (Apps Script 웹 앱 URL). 비워두면 config.js의 주소를 씁니다. 여기 넣은 주소는 이 브라우저에만 적용돼요.</label><input id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const VER='v2';
+const store={get(k,d){try{const v=localStorage.getItem('adminkit2:'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('adminkit2:'+k,JSON.stringify(v))}catch(e){}}};
+const stage=$('#stage');
+const secs=[['start','시작',10],['p1','1 업무·보고서',25],['p2','2 안내·홍보',20],['p3','3 HTML 발표',15],['p4','4 참여형 퀴즈',10],['p5','5 업무 웹앱',25],['p6','마무리',10]];
+const slides=$$('.slide');const N=slides.length;
+let cur=0;
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1800)}
+
+/* 화면 맞춤 */
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='translate(-50%,-50%) scale('+s+')'}
+addEventListener('resize',fit);fit();
+
+/* 목차 */
+const done=store.get('done',{});
+function drawToc(){const sec=slides[cur].dataset.sec;$('#toc').innerHTML=secs.map(s=>{const st=$$('.slide[data-sec="'+s[0]+'"] .done-b');const n=st.filter(b=>done[b.dataset.k]).length;return '<div class="si'+(s[0]===sec?' on':'')+'" data-go="'+s[0]+'"><span>'+s[1]+'</span><small>'+(st.length?n+'/'+st.length+' · ':'')+s[2]+'분</small></div>'}).join('')}
+$('#toc').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(slides.findIndex(s=>s.dataset.sec===g.dataset.go))});
+$('#home').addEventListener('click',e=>{if(!document.body.classList.contains('editing'))go(0)});
+
+/* 이동 */
+function go(i){cur=Math.max(0,Math.min(N-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));const s=slides[cur];const sec=secs.find(x=>x[0]===s.dataset.sec);$('#bSec').textContent=sec[1];$('#bTitle').textContent=s.dataset.t;$('#bPg').textContent=(cur+1)+' / '+N;$('#tPg').textContent=(cur+1)+' / '+N;drawToc();redraw();try{history.replaceState(null,'','#s'+(cur+1))}catch(e){}}
+addEventListener('hashchange',()=>{const m=parseInt((location.hash.match(/^#s(\d+)$/)||[])[1]);if(m&&m-1!==cur)go(m-1)});
+$('#tPrev').onclick=()=>go(cur-1);$('#tNext').onclick=()=>go(cur+1);
+
+/* 완료 버튼, 체크 */
+$$('.done-b').forEach(b=>{const set=()=>{b.classList.toggle('on',!!done[b.dataset.k]);b.textContent=done[b.dataset.k]?'✓ 완료':'완료'};set();b.addEventListener('click',()=>{done[b.dataset.k]=!done[b.dataset.k];store.set('done',done);set();drawToc()})});
+$$('input[data-k]').forEach(i=>{i.checked=!!store.get(i.dataset.k,false);i.addEventListener('change',()=>store.set(i.dataset.k,i.checked))});
+
+/* 복사 */
+async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
+function tText(t){return [...t.rows].map(r=>[...r.cells].map(c=>c.textContent.trim()).join('\t')).join('\n')}
+function flash(b,ok){if(!b.dataset.o)b.dataset.o=b.textContent;b.textContent=ok?'✓ 복사됨':'복사가 막혔어요';b.classList.add('ok');setTimeout(()=>{b.textContent=b.dataset.o;b.classList.remove('ok')},1500)}
+document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2');if(!b||!b.dataset.t)return;const el=document.getElementById(b.dataset.t);let t=el.tagName==='TABLE'?tText(el):el.tagName==='TEXTAREA'?el.value:el.innerText;if(b.dataset.doc)t=$('#doc').innerText+'\n\n'+t;flash(b,await copyText(t.trim()))});
+
+/* 미니 슬라이드 */
+const md=[['2027. 3. 1.자 정기 전보 안내','교직원 회의 · 12월 첫째 주'],['기준일은 2027년 2월 28일','월 단위로 계산하고, 1개월 미만은 버립니다.'],['같은 학교 5년이면 만기','만기 유예는 교육과정 운영상 꼭 필요할 때만 1년 범위에서.'],['희망 전보는 2년부터, 5개교까지','올해부터 지망 학교가 3개교에서 5개교로 늘었습니다.'],['내신서는 12월 11일(금)까지','온라인으로만 받고, 학교는 12월 18일까지 제출합니다.'],['궁금한 점은 교무실로','문의: 교무실 내선 201']];
+let mi=0;function drawM(){$('#mdeck').innerHTML='<h4>'+md[mi][0]+'</h4><p>'+md[mi][1]+'</p><span class="pg">'+(mi+1)+' / '+md.length+'</span>'}
+$('#mPrev').onclick=()=>{mi=Math.max(0,mi-1);drawM()};$('#mNext').onclick=()=>{mi=Math.min(md.length-1,mi+1);drawM()};drawM();
+
+/* 퀴즈 */
+const qs=[['근무기간을 계산하는 기준일은 2027년 3월 1일이다.','X','기준일은 2027. 2. 28.입니다. 3월 1일은 전보 발령일입니다.'],['같은 학교에서 5년 이상 근무한 교원은 만기 전보 대상이다.','O','동일 학교 근무기간이 5년 이상인 교원이 만기 전보 대상입니다.'],['희망 전보는 현 학교에서 1년만 근무해도 신청할 수 있다.','X','희망 전보는 동일 학교 근무기간이 2년 이상이어야 합니다.'],['근무기간 중 1개월 미만은 1개월로 올려서 계산한다.','X','1개월 미만의 기간은 버립니다.'],['올해부터 희망 전보 지망 학교를 5개교까지 쓸 수 있다.','O','지망 학교가 3개교에서 5개교로 늘었습니다.']];
+let qi=0,sc=0,ans=false;
+function drawQ(){$('#qn').textContent='문제 '+(qi+1)+' / '+qs.length;$('#qq').textContent=qs[qi][0];$('#fb').className='fb';ans=false;$('#qs').textContent=sc}
+function pick(a){if(ans)return;if(!pname()){toast('이름 또는 학교를 먼저 적어 주세요');$('#pname').focus();return}ans=true;const ok=a===qs[qi][1];send({type:'quiz',q:qi+1,a,ok});if(ok)sc++;$('#fb').className='fb '+(ok?'y':'n');$('#fb').textContent=(ok?'정답입니다. ':'아쉬워요. 정답은 '+qs[qi][1]+'. ')+'근거: '+qs[qi][2];$('#qs').textContent=sc}
+$('#bo').onclick=()=>pick('O');$('#bx').onclick=()=>pick('X');
+$('#qnx').onclick=()=>{if(qi<qs.length-1){qi++;drawQ()}else{$('#qq').textContent='끝! '+qs.length+'문제 중 '+sc+'개를 맞혔습니다.';$('#fb').className='fb'}};
+$('#qr').onclick=()=>{qi=0;sc=0;drawQ()};drawQ();
+
+/* 계산기 */
+const sample=[['김하늘','2021-03-01'],['이도윤','2022-09-01'],['박서연','2022-03-15'],['최민준','2026-03-01'],['정유나','2025-03-01']];
+let rows=store.get('calc',null)||sample.map(r=>r.slice());
+function months(a,b){if(!a||!b)return null;const[ay,am,ad]=a.split('-').map(Number);const[by,bm,bd]=b.split('-').map(Number);const e=new Date(Date.UTC(by,bm-1,bd+1));let m=(e.getUTCFullYear()-ay)*12+(e.getUTCMonth()+1-am);if(e.getUTCDate()<ad)m--;return m<0?null:m}
+const fmt=m=>Math.floor(m/12)+'년 '+(m%12)+'개월';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function lim(){return[(+$('#cMax').value||5)*12,(+$('#cMin').value||0)*12]}
+function calc(){const base=$('#cBase').value,[mx,mn]=lim();let a=0,b=0;
+  $('#cRows').innerHTML=rows.map((r,i)=>{const m=months(r[1],base);let s,x,y;if(m===null){s='<span class="no">날짜 확인</span>';x=y=''}else{s='<span class="nw">'+fmt(m)+'</span>';if(m>=mx){a++;x='<span class="hot nw">대상</span>'}else x='<span class="no nw">'+fmt(mx-m)+' 남음</span>';if(m>=mn){b++;y='<span class="yes">가능</span>'}else y='<span class="no">불가</span>'}
+  return '<tr><td><input aria-label="이름" data-i="'+i+'" data-f="0" value="'+esc(r[0])+'"></td><td><input type="date" aria-label="발령일" data-i="'+i+'" data-f="1" value="'+esc(r[1])+'"></td><td>'+s+'</td><td>'+x+'</td><td>'+y+'</td><td><button class="del" data-del="'+i+'">삭제</button></td></tr>'}).join('');
+  $('#sA').textContent=a+'명';$('#sB').textContent=b+'명';store.set('calc',rows)}
+$('#cRows').addEventListener('change',e=>{const t=e.target;if(t.dataset.i!==undefined){rows[+t.dataset.i][+t.dataset.f]=t.value;calc()}});
+$('#cRows').addEventListener('click',e=>{const d=e.target.dataset.del;if(d!==undefined){rows.splice(+d,1);calc()}});
+['#cBase','#cMax','#cMin'].forEach(s=>$(s).addEventListener('input',calc));
+$('#cAdd').onclick=()=>{rows.push(['새 선생님','2024-03-01']);calc()};
+$('#cReset').onclick=()=>{rows=sample.map(r=>r.slice());calc()};
+$('#cCopy').onclick=async e=>{const b=e.currentTarget,base=$('#cBase').value,[mx,mn]=lim();const t=['이름\t발령일\t근무기간\t만기\t희망 전보'].concat(rows.map(r=>{const m=months(r[1],base);return m===null?r[0]+'\t'+r[1]+'\t\t\t':[r[0],r[1],fmt(m),m>=mx?'대상':'아님',m>=mn?'가능':'불가'].join('\t')})).join('\n');flash(b,await copyText(t))};
+calc();
+$('#mine').value=store.get('mine','');$('#mine').addEventListener('input',e=>store.set('mine',e.target.value));
+
+/* 판서 */
+const cv=$('#ink'),cx=cv.getContext('2d');const strokes={};let mode='',drawing=null;
+function stagePt(e){const r=stage.getBoundingClientRect();return[(e.clientX-r.left)/r.width*1920,(e.clientY-r.top)/r.height*1080]}
+function paint(s){cx.save();cx.globalAlpha=s.a;cx.strokeStyle=s.c;cx.lineWidth=s.w;cx.lineCap='round';cx.lineJoin='round';cx.beginPath();s.p.forEach((p,i)=>i?cx.lineTo(p[0],p[1]):cx.moveTo(p[0],p[1]));if(s.p.length===1)cx.lineTo(s.p[0][0]+.1,s.p[0][1]);cx.stroke();cx.restore()}
+function redraw(){cx.clearRect(0,0,1920,1080);(strokes[cur]||[]).forEach(paint)}
+cv.addEventListener('pointerdown',e=>{if(mode!=='pen'&&mode!=='hi')return;cv.setPointerCapture(e.pointerId);drawing=mode==='pen'?{c:'#e8342a',w:6,a:1,p:[stagePt(e)]}:{c:'#ffd400',w:34,a:.38,p:[stagePt(e)]};(strokes[cur]=strokes[cur]||[]).push(drawing);redraw()});
+cv.addEventListener('pointermove',e=>{if(!drawing)return;drawing.p.push(stagePt(e));redraw()});
+cv.addEventListener('pointerup',()=>{drawing=null});
+function setMode(m){mode=mode===m?'':m;stage.classList.toggle('pen',mode==='pen'||mode==='hi');stage.classList.toggle('laser',mode==='laser');$('#laser').style.display='none';$('#tPen').classList.toggle('on',mode==='pen');$('#tHi').classList.toggle('on',mode==='hi');$('#tLaser').classList.toggle('on',mode==='laser')}
+$('#tPen').onclick=()=>setMode('pen');$('#tHi').onclick=()=>setMode('hi');$('#tLaser').onclick=()=>setMode('laser');
+$('#tClr').onclick=()=>{strokes[cur]=[];redraw()};
+stage.addEventListener('pointermove',e=>{if(mode!=='laser')return;const[x,y]=stagePt(e);const l=$('#laser');l.style.display='block';l.style.left=x+'px';l.style.top=y+'px'});
+stage.addEventListener('pointerleave',()=>{$('#laser').style.display='none'});
+
+/* 타이머 */
+let tTot=600,tLeft=600,tRun=null;
+const mmss=s=>{const a=Math.abs(s);return(s<0?'-':'')+String(Math.floor(a/60)).padStart(2,'0')+':'+String(a%60).padStart(2,'0')};
+function tDraw(){$('#tmr').textContent=mmss(tLeft);$('#tBig').textContent=mmss(tLeft);$('#tmr').classList.toggle('late',tLeft<=0);$('#tGo').textContent=tRun?'일시정지':'시작';const sec=secs.find(x=>x[0]===slides[cur].dataset.sec);$('#tSecHint').textContent=sec[1]+' · '+sec[2]+'분'}
+function tSet(m){tTot=tLeft=m*60;tStop();tDraw()}
+function tStop(){clearInterval(tRun);tRun=null}
+function tToggle(){if(tRun){tStop()}else{tRun=setInterval(()=>{tLeft--;tDraw()},1000)}tDraw()}
+$('#tTmr').onclick=()=>{$('#tpop').classList.toggle('on');tDraw()};
+$$('#tpop [data-m]').forEach(b=>b.onclick=()=>tSet(+b.dataset.m));
+$('#tSec').onclick=()=>tSet(secs.find(x=>x[0]===slides[cur].dataset.sec)[2]);
+$('#tGo').onclick=tToggle;$('#tRst').onclick=()=>{tLeft=tTot;tStop();tDraw()};$('#tClose').onclick=()=>$('#tpop').classList.remove('on');
+tDraw();
+
+/* 목록 */
+function openOv(){$('#ovg').innerHTML=slides.map((s,i)=>'<button data-i="'+i+'" class="'+(i===cur?'on':'')+'"><small>'+(i+1)+' · '+secs.find(x=>x[0]===s.dataset.sec)[1]+'</small><b>'+s.dataset.t+'</b></button>').join('');$('#ov').classList.add('on')}
+$('#tOv').onclick=openOv;
+$('#ovg').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b){go(+b.dataset.i);$('#ov').classList.remove('on')}});
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')$('#ov').classList.remove('on')});
+
+/* 사이드바, 전체 화면 */
+$('#tSide').onclick=()=>{stage.classList.toggle('noside');$('#tSide').classList.toggle('on',stage.classList.contains('noside'))};
+$('#tFs').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){toast('전체 화면이 막혀 있어요. 키보드 F11을 눌러 주세요')}};
+
+/* 편집 */
+const eds=$$('[data-ek]').filter(el=>!el.closest('.widget'));
+const orig=eds.map(el=>el.innerHTML);
+eds.forEach((el,i)=>el.dataset.ek=i);
+let saved=store.get('edits',{});if(saved.v!==VER)saved={v:VER,m:{}};
+eds.forEach((el,i)=>{if(saved.m[i]!==undefined)el.innerHTML=saved.m[i]});
+function editOn(on){document.body.classList.toggle('editing',on);eds.forEach(el=>{if(on)el.setAttribute('contenteditable','true');else el.removeAttribute('contenteditable')});$('#tEdit').classList.toggle('on',on);if(on){setMode('');toast('글자를 눌러 바로 고치세요')}}
+eds.forEach((el,i)=>el.addEventListener('input',()=>{saved.m[i]=el.innerHTML;store.set('edits',saved)}));
+$('#tEdit').onclick=()=>editOn(!document.body.classList.contains('editing'));
+$('#eOff').onclick=()=>editOn(false);
+$('#eSlide').onclick=()=>{eds.forEach((el,i)=>{if(slides[cur].contains(el)){el.innerHTML=orig[i];delete saved.m[i]}});store.set('edits',saved);toast('이 장을 처음 내용으로 되돌렸어요')};
+$('#eAll').onclick=()=>{eds.forEach((el,i)=>el.innerHTML=orig[i]);saved={v:VER,m:{}};store.set('edits',saved);toast('전체를 처음 내용으로 되돌렸어요')};
+$('#eHtml').onclick=async e=>{const c=document.documentElement.cloneNode(true);c.querySelector('body').classList.remove('editing');c.querySelectorAll('[contenteditable]').forEach(x=>x.removeAttribute('contenteditable'));c.querySelectorAll('.slide').forEach(x=>x.classList.remove('on'));const ok=await copyText('<!DOCTYPE html>\n'+c.outerHTML);toast(ok?'수정된 HTML을 복사했어요':'복사가 막혔어요')};
+
+/* 도구 막대 자동 숨김 */
+let idle;function wake(){$('#tbw').classList.remove('idle');clearTimeout(idle);idle=setTimeout(()=>{if(!$('#tpop').classList.contains('on')&&!$('#tbw').matches(':hover'))$('#tbw').classList.add('idle')},2500)}
+addEventListener('pointermove',wake);wake();
+
+/* 참여 결과 */
+const CFG=window.KIT_CONFIG||{};const SESSION=CFG.session||'default';
+const apiIn=$('#apiUrl');apiIn.value=store.get('api','');apiIn.addEventListener('change',()=>{store.set('api',apiIn.value.trim());load()});
+const API=()=>store.get('api','')||CFG.api||'';
+function pname(){return($('#pname').value||'').trim()}
+$$('.pname').forEach(i=>{i.value=store.get('pname','');i.addEventListener('input',()=>{$$('.pname').forEach(o=>{if(o!==i)o.value=i.value});store.set('pname',i.value)})});
+async function send(d){const u=API();if(!u)return false;d.name=pname();d.session=SESSION;try{await fetch(u,{method:'POST',mode:'no-cors',body:JSON.stringify(d)});return true}catch(e){return false}}
+$('#tSend').onclick=async()=>{const t=$('#mine').value.trim();if(!pname()){toast('이름 또는 학교를 먼저 적어 주세요');$('#pname2').focus();return}if(!t){toast('해볼 업무를 적어 주세요');$('#mine').focus();return}
+  if(!API()){toast('결과 저장소가 아직 연결되지 않았어요');return}const ok=await send({type:'task',text:t});$('#tLive').textContent=ok?'제출했어요 ✓':'제출하지 못했어요. 다시 눌러 주세요';done['p6-1']=true;store.set('done',done);drawToc()};
+let rTab='quiz',rData=null,rTimer=null,hide=store.get('hide',false),since=store.get('since',0);
+function agg(){const q={};(rData.quiz||[]).filter(r=>r.t>=since).forEach(r=>{const k=r.name+'|'+r.q;if(!q[k]||q[k].t<=r.t)q[k]=r});const L=Object.values(q);const people={};L.forEach(r=>{people[r.name]=people[r.name]||{n:0,s:0};people[r.name].n++;if(r.ok)people[r.name].s++});return{L,people}}
+function rDraw(){const b=$('#rBody');$('#rHide').textContent=hide?'이름 보이기':'이름 가리기';
+  if(!API()){b.innerHTML='<p style="font-size:20px">결과 저장소가 아직 연결되지 않았어요. 아래 칸에 Apps Script 웹 앱 주소를 넣거나, 저장소의 config.js에 주소를 넣어 주세요. 설정 방법은 README에 있어요.</p>';return}
+  if(!rData){b.innerHTML='<p>불러오는 중…</p>';return}
+  const nm=(n,i)=>hide?'참여자 '+(i+1):esc(n||'이름 없음');
+  if(rTab==='quiz'){const{L,people}=agg();const ps=Object.entries(people);const avg=ps.length?(ps.reduce((a,p)=>a+p[1].s,0)/ps.length).toFixed(1):'0';
+    $('#qLive').innerHTML='응답 <b>'+ps.length+'명</b>';
+    b.innerHTML='<div class="kpi"><div><b>'+ps.length+'명</b>참여</div><div><b>'+avg+'점</b>평균 (5점 만점)</div><div><b>'+ps.filter(p=>p[1].s===5).length+'명</b>만점</div></div>'+
+    qs.map((x,i)=>{const r=L.filter(y=>+y.q===i+1);const ok=r.filter(y=>y.ok).length;const pc=r.length?Math.round(ok/r.length*100):0;const o=r.filter(y=>y.a==='O').length;return '<div class="qbar"><div>'+(i+1)+'. '+esc(x[0])+'<small>정답 '+x[1]+' · O '+o+'명 · X '+(r.length-o)+'명</small></div><div class="tr"><i style="width:'+pc+'%"></i></div><div class="pc">'+pc+'%</div></div>'}).join('')+
+    '<div class="rank">'+ps.sort((a,c)=>c[1].s-a[1].s||c[1].n-a[1].n).map((p,i)=>'<div><span>'+nm(p[0],i)+'</span><b>'+p[1].s+' / '+p[1].n+'</b></div>').join('')+'</div>'}
+  else{const T=(rData.tasks||[]).filter(r=>r.t>=since).sort((a,c)=>c.t-a.t);$('#tLive').textContent=$('#tLive').textContent||'';
+    b.innerHTML='<div class="kpi"><div><b>'+T.length+'건</b>제출</div></div>'+(T.length?'<div class="tasks">'+T.map((r,i)=>'<div>'+esc(r.text)+'<small>'+nm(r.name,i)+'</small></div>').join('')+'</div>':'<p>아직 제출된 업무가 없어요.</p>')}}
+async function load(){if(!API()){rDraw();$('#rSt').textContent='';return}try{const r=await fetch(API()+'?session='+encodeURIComponent(SESSION));rData=await r.json();$('#rSt').textContent='자동 새로고침 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){$('#rSt').textContent='불러오지 못했어요. 주소와 배포 설정을 확인해 주세요'}rDraw()}
+function openRes(tab){if(tab)rTab=tab;$$('.res .tabs button').forEach(x=>x.classList.toggle('on',x.dataset.rt===rTab));$('#res').classList.add('on');rDraw();load();clearInterval(rTimer);rTimer=setInterval(load,5000)}
+function closeRes(){$('#res').classList.remove('on');clearInterval(rTimer)}
+$('#tRes').onclick=()=>openRes(slides[cur].dataset.sec==='p6'?'tasks':rTab);
+$$('.showres').forEach(b=>b.onclick=()=>openRes(b.dataset.tab));
+$$('.res .tabs button').forEach(b=>b.onclick=()=>openRes(b.dataset.rt));
+$('#rClose').onclick=closeRes;
+$('#rHide').onclick=()=>{hide=!hide;store.set('hide',hide);rDraw()};
+$('#rSince').onclick=()=>{since=Date.now();store.set('since',since);rDraw();toast('지금부터 들어오는 결과만 보여요')};
+$('#rAll').onclick=()=>{since=0;store.set('since',0);rDraw()};
+
+/* 키보드 */
+addEventListener('keydown',e=>{const t=e.target;const typing=t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName);
+  if(e.key==='Escape'){if(typing)t.blur();setMode('');closeRes();$('#ov').classList.remove('on');$('#tpop').classList.remove('on');return}
+  if(typing||e.ctrlKey||e.metaKey||e.altKey)return;
+  const k=e.key;
+  if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();go(cur+1)}
+  else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();go(cur-1)}
+  else if(k==='Home')go(0);else if(k==='End')go(N-1);
+  else if(k==='p'||k==='P')setMode('pen');else if(k==='h'||k==='H')setMode('hi');else if(k==='l'||k==='L')setMode('laser');
+  else if(k==='c'||k==='C'){strokes[cur]=[];redraw()}
+  else if(k==='t'||k==='T')tToggle();else if(k==='o'||k==='O')openOv();
+  else if(k==='s'||k==='S')$('#tSide').click();else if(k==='e'||k==='E')editOn(!document.body.classList.contains('editing'));
+  else if(k==='f'||k==='F')$('#tFs').click();
+  else if(k==='r'||k==='R'){$('#res').classList.contains('on')?closeRes():$('#tRes').click()}
+  wake()});
+const h0=parseInt((location.hash.match(/^#s(\d+)$/)||[])[1]);go(h0?h0-1:0);
+}
+</script>
+</body>
+</html>
