@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 AI 실습 키트</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* VOICE work: 관리자 연수용 16:9 발표 겸 실습 화면
    IDEA 대화형 AI 채팅 화면: 왼쪽 사이드바가 목차, 프롬프트는 회색 말풍선, 결과는 답변처럼
@@ -108,6 +108,10 @@ input,textarea{font:inherit;font-size:22px;padding:10px 14px;border:1px solid va
 .ct td{font-size:22px;vertical-align:middle}
 .ct input{font-size:21px;padding:6px 10px}
 .hot{color:var(--red);font-weight:700;white-space:nowrap}.yes{color:var(--ok);font-weight:700;white-space:nowrap}.no{color:var(--mut);white-space:nowrap}
+.ct th{white-space:nowrap}
+.ct select{font:inherit;font-size:20px;padding:6px 8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+.ct .cb{width:26px;height:26px;accent-color:var(--ok)}
+.dl{display:flex;align-items:center;gap:6px;font-size:20px;white-space:nowrap}
 .del{white-space:nowrap;font:inherit;font-size:19px;border:0;background:none;color:var(--mut);cursor:pointer;padding:6px 10px;border-radius:8px}.del:hover{background:var(--hov)}
 #ink{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none;z-index:5}
 #stage.pen #ink{pointer-events:auto;cursor:crosshair}
@@ -191,6 +195,63 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 @keyframes rise{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:.8}}
 @keyframes grow{from{transform:scale(.2)}to{transform:scale(1)}}
 @keyframes fill{from{width:0}to{width:100%}}
+.slide.wide{padding:10px 40px 92px}
+.cap4{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:12px}
+.cap4 h3{font-size:30px}
+.gk{background:#2f8f33;color:#fff;border-radius:6px;padding:0 10px;font-size:26px}
+.ef{height:800px;display:grid;grid-template-rows:34px 40px minmax(0,1fr);background:#fff;color:#222;border:1px solid #9aa4ae;box-shadow:0 10px 40px rgba(0,0,0,.18);font:14px/1.45 "Noto Sans KR","Malgun Gothic",sans-serif;color-scheme:light}
+.ef-t{display:flex;align-items:center;gap:8px;padding:0 12px;font-size:14px;border-bottom:1px solid #ddd;white-space:nowrap;overflow:hidden}
+.ef-ico{width:16px;height:16px;background:linear-gradient(135deg,#e8a33d,#c0392b);border-radius:2px;flex:none}
+.ef-t .w{margin-left:auto;display:flex;gap:26px;font-size:16px;color:#333}
+.ef-h{background:#2b86c5;color:#fff;display:flex;align-items:center;padding:0 14px;font-weight:700;font-size:15px}
+.ef-h .r{margin-left:auto;display:flex;gap:8px;align-items:center;font-weight:400;font-size:14px}
+.ef-h .ib{width:30px;height:24px;background:#fff;border-radius:3px;border:1px solid #cfd8e0}
+.ef-b{display:grid;grid-template-columns:minmax(0,44fr) minmax(0,56fr);gap:14px;padding:10px 12px;min-height:0}
+.ef-l{display:flex;flex-direction:column;min-height:0;overflow:hidden;padding-top:34px}
+.ef-tab{display:flex;gap:2px;border-bottom:2px solid #1f3654}
+.ef-tab span{padding:6px 16px;font-size:14px;border:1px solid #c9cfd6;border-bottom:0;color:#333;background:#fff}
+.ef-tab span.on{background:#1f3654;color:#fff;font-weight:700;border-color:#1f3654}
+.ef-sec{font-weight:700;font-size:14px;margin:8px 0 6px;padding-left:6px;border-left:3px solid #2b86c5;line-height:1.2}
+.ef table{border-collapse:collapse;width:100%}
+.ef-info th{background:#eef3e8;text-align:right;padding:4px 8px;width:112px;border:1px solid #dfe3da;font-weight:700;color:#333;white-space:nowrap;font-size:13px}
+.ef-info td{border:1px solid #dfe3da;padding:4px 8px;font-size:13px;color:#333}
+.ef .ck,.ef .rd{display:inline-block;width:13px;height:13px;border:1px solid #888;vertical-align:-2px;margin:0 3px 0 6px;background:#fff}
+.ef .rd{border-radius:50%}
+.ef .ck.on{background:#444;border-color:#444}.ef .rd.on{border:4px solid #1f5fbf}
+.ef .mut{color:#777;float:right}
+.tagg{background:#3aa74a;color:#fff;font-size:11px;padding:0 5px;border-radius:2px}
+.fld{display:block;height:20px;border:1px solid #ccd;background:#fff}
+.fld.ph{color:#999;padding:0 6px;font-size:12px;line-height:18px}
+.gb{background:#2f8f33;color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:2px;white-space:nowrap}
+.ef-path th{background:#3d3d3d;color:#fff;font-size:12.5px;padding:5px;border:1px solid #555;font-weight:500}
+.ef-path td{border:1px solid #ddd;text-align:center;font-size:12.5px;padding:5px}
+.ef-files th{background:#eef3e8;font-size:12.5px;padding:4px;border:1px solid #dfe3da;font-weight:500}
+.ef-files td{font-size:12px;padding:4px 5px;border-bottom:1px solid #eee;white-space:nowrap}
+.ef-files td:nth-child(2){white-space:normal}
+.ef-files a{color:#3b5bdb}
+.fi{display:inline-block;width:12px;height:14px;margin-right:5px;vertical-align:-2px;border-radius:2px}.fi.h{background:#c0392b}.fi.x{background:#2e8b57}
+.ef-r{display:flex;flex-direction:column;min-height:0}
+.ef-rt{display:flex;align-items:flex-end;gap:10px;margin-bottom:4px;flex-direction:row-reverse;flex-wrap:wrap}
+.ef-rt .ef-tab{flex-basis:100%}
+.ef-copy{font:700 14px "Noto Sans KR",sans-serif;background:#2f8f33;color:#fff;border:0;border-radius:3px;padding:6px 12px;cursor:pointer;margin-bottom:4px}
+.ef-copy:hover{background:#25752a}
+.ef-copy.ok{background:#1f3654}
+.hwp{flex:1;min-height:0;border:1px solid #b9c2cc;display:grid;grid-template-rows:24px 24px 24px minmax(0,1fr) 20px;background:#f3f5f7}
+.hm{display:flex;gap:18px;font-size:12.5px;padding:3px 10px;border-bottom:1px solid #dde2e7}
+.hb{display:flex;gap:6px;align-items:center;padding:0 8px;border-bottom:1px solid #e3e7eb}
+.hb .ic{display:inline-block;height:14px;background:#8c97a3;border-radius:2px;opacity:.75}
+.hb .sp{width:1px;height:16px;background:#c5ccd3;margin:0 4px}
+.hc{overflow:auto;background:#d7dbe0;padding:14px 18px}
+.hpg{background:#fff;max-width:860px;margin:0 auto;padding:48px 56px;box-shadow:0 0 0 1px #c3c9cf;font:16px/1.75 "Nanum Myeongjo","Batang",serif;color:#111}
+.hpg p{margin:0 0 4px}.hpg .c{text-align:center}.hpg .i1{padding-left:1em}.hpg .i2{padding-left:2em}
+.hpg .org{font-size:30px;text-align:center;margin:0 0 26px;letter-spacing:-.02em}
+.hpg .hd{margin:0 0 12px;border-bottom:2px solid #111}.hpg .hd td{padding:3px 6px;vertical-align:top}.hpg .hd .l{width:60px;white-space:nowrap}
+.hpg .ht{margin:6px 0 10px 1em;width:calc(100% - 1em);font-size:14px;line-height:1.5}
+.hpg .ht th{border-top:2px solid #111;border-bottom:1px solid #111;background:#eee;padding:4px;font-weight:700}
+.hpg .ht td{border-bottom:1px solid #999;padding:4px 6px;text-align:center;vertical-align:middle}
+.hpg .ht td.t{text-align:left}
+.hpg .ht.sm{font-size:12px;margin-top:10px}
+.hs{display:flex;gap:28px;font-size:11.5px;padding:2px 12px;color:#444;border-top:1px solid #dde2e7;background:#eef0f3}
 .cmp{width:100%;border-collapse:collapse;font-size:21px;margin-top:8px}
 @media(prefers-reduced-motion:reduce){.tb-wrap{transition:none}.mg *{animation:none!important}}
 </style>
@@ -225,7 +286,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <div style="height:52%"><b>+이미지·영상</b><span>카드뉴스·포스터·영상</span></div>
     <div style="height:66%"><b>+HTML</b><span>회의 발표 자료</span></div>
     <div style="height:82%"><b>+상호작용</b><span>OX 퀴즈</span></div>
-    <div style="height:100%"><b>+기능</b><span>근무기간 계산기</span></div>
+    <div style="height:100%"><b>+기능</b><span>제출 현황판</span></div>
   </div>
   <p class="d">단계마다 완성본을 먼저 보고 → 복사해서 붙여넣고 → 끝나면 완료를 누릅니다.</p>
 </div></section>
@@ -249,56 +310,174 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 </div></section>
 
 <!-- 4 자료 -->
-<section class="slide" data-sec="p1" data-t="실습 자료"><div class="two">
-  <div><p class="k">1단계 · 20분</p><h2>업무·보고서</h2>
-    <p class="d">공문을 붙여넣고 "요약해줘"부터 시작합니다. 요청에 대상과 형식을 한 줄씩 더하면 결과가 어떻게 달라지는지 봅니다.</p>
-    <p><span class="tag">Claude</span><span class="tag">ChatGPT</span><span class="tag">Gemini</span><span class="tag">NotebookLM</span></p>
-    <div class="links"><button class="pill dark cp2" data-t="doc">자료 복사</button></div>
-    <p class="smp" style="margin-top:18px">실습용 가상 자료입니다. 실제 기준은 인사업무 처리 요령 최신판을 확인하세요.</p></div>
-  <div class="doc"><pre id="doc" data-ek>2027. 3. 1.자 초등 교원 정기 전보 업무 안내 (연수 실습용 가상 자료)
-※ 이 자료는 AI 실습을 위해 만든 가상 자료로, 실제 전보 기준과 다릅니다.
+<section class="slide wide" data-sec="p1" data-t="실습 자료: K-에듀파인 공문">
+  <div class="cap4"><div><p class="k" style="margin:0">1단계 · 20분 · 실습 자료</p><h3 style="margin:0">K-에듀파인에서 공문을 열고, 오른쪽 위 <span class="gk">본문복사</span>를 누릅니다</h3></div><span class="smp">실습용 재현 화면 · 담당자 이름은 ○○○으로 가렸습니다</span></div>
+  <div class="ef widget">
+    <div class="ef-t"><i class="ef-ico"></i>[제출] 2027.3.1.자 공립 유·초등교원(특수, 보건, 사서, 전문상담, 영양교사 포함) 시·도간 교류 추진 계획 및 인사자료 제출 안내<span class="w"><span>─</span><span>☐</span><span>✕</span></span></div>
+    <div class="ef-h">문서관리카드조회<span class="r"><i class="ib"></i><i class="ib"></i><span>닫기 ✕</span></span></div>
+    <div class="ef-b">
+      <div class="ef-l">
+        <div class="ef-tab"><span class="on">결재정보 4</span></div>
+        <div class="ef-sec">문서정보</div>
+        <table class="ef-info"><tbody>
+          <tr><th>제목</th><td>[제출] 2027.3.1.자 공립 유·초등교원(특수, 보건, 사서, 전문상담, 영양교사 포함) 시·도간 교류 추진 계획 및 인사자료 제출 안내 <span class="mut"><i class="ck"></i>긴급</span></td></tr>
+          <tr><th>문서번호</th><td>오남초등학교-12940</td></tr>
+          <tr><th>과제카드</th><td><span class="tagg">단위</span> [교직원인사발령관리] 교육공무원인사발령관리 (5년)</td></tr>
+          <tr><th>관련정보</th><td><span class="fld"></span></td></tr>
+          <tr><th>키워드</th><td><span class="fld ph">예시) #학교 #문서 #결재 #보고</span></td></tr>
+          <tr><th>대국민공개여부</th><td><i class="rd"></i>공개 <i class="rd"></i>부분공개 <i class="rd on"></i>비공개 &nbsp;<i class="ck on"></i><b>정보공개포털 목록(공개)</b></td></tr>
+          <tr><th>공개제한근거</th><td><span class="gb">관계법령</span> <i class="ck"></i>1호 <i class="ck"></i>2호 <i class="ck"></i>3호 <i class="ck"></i>4호 <i class="ck"></i>5호 <i class="ck on"></i>6호 <i class="ck"></i>7호 <i class="ck"></i>8호 </td></tr>
+          <tr><th>직원열람제한</th><td><i class="rd"></i>설정안함 <i class="rd"></i>결재완료일까지 <i class="rd"></i>지정날짜까지 <i class="rd on"></i>영구</td></tr>
+          <tr><th>발신기관명</th><td>경기도구리남양주교육지원청 초등교육지원과</td></tr>
+        </tbody></table>
+        <div class="ef-tab" style="margin-top:12px"><span class="on">결재경로</span><span>공람 (24)</span><span>지식공유</span></div>
+        <div class="ef-sec">결재경로</div>
+        <table class="ef-path"><thead><tr><th>순번</th><th>처리방법</th><th>직위(직급)</th><th>처리자</th><th>처리상태</th><th>처리일시</th></tr></thead><tbody>
+          <tr><td>2</td><td>업무담당자</td><td>교감</td><td>김○○</td><td>완료</td><td>2026-10-07 10:54</td></tr>
+          <tr><td>1</td><td>접수</td><td>행정실무사</td><td>홍○○</td><td>완료</td><td>2026-10-07 10:20</td></tr>
+        </tbody></table>
+        <div class="ef-sec" style="display:flex;justify-content:space-between;align-items:center;border:0;padding:0"><span style="border-left:3px solid #2b86c5;padding-left:6px">첨부</span><span><span class="gb">첨부파일 오류 조치방안</span> <span class="gb">파일읽기</span> <span class="gb">PC저장</span></span></div>
+        <table class="ef-files"><thead><tr><th></th><th>파일명</th><th>용량</th><th>공개여부</th></tr></thead><tbody>
+          <tr><td><i class="ck"></i></td><td><i class="fi h"></i><a>[붙임1] 2027.3.1.자 공립 유·초등교원 시·도간 교류 추진 계획.hwpx</a></td><td>300.99 KB</td><td><i class="rd"></i>공개 <i class="rd on"></i>비공개</td></tr>
+          <tr><td><i class="ck"></i></td><td><i class="fi x"></i><a>[붙임2] 2027.3.1.자 시·도간 교환(파견) 복귀자 명부(서식).xlsx</a></td><td>13.95 KB</td><td><i class="rd"></i>공개 <i class="rd on"></i>비공개</td></tr>
+          <tr><td><i class="ck"></i></td><td><i class="fi h"></i><a>[붙임3] 교환(파견) 근무 복귀 신청서(서식).hwpx</a></td><td>29.32 KB</td><td><i class="rd"></i>공개 <i class="rd on"></i>비공개</td></tr>
+          <tr><td><i class="ck"></i></td><td><i class="fi h"></i><a>[붙임4] G-인사이트 접속방법 및 문의사항 안내(학교안내용).hwpx</a></td><td>652.47 KB</td><td><i class="rd"></i>공개 <i class="rd on"></i>비공개</td></tr>
+        </tbody></table>
+      </div>
+      <div class="ef-r">
+        <div class="ef-rt"><div class="ef-tab" style="margin:0;flex:1"><span class="on">본문</span></div><button class="ef-copy cp2" data-t="doc">본문복사</button></div>
+        <div class="hwp">
+          <div class="hm"><span>파일(F)</span><span>편집(E)</span><span>보기(U)</span><span>입력(D)</span><span>모양(J)</span><span>도구(K)</span><span>표(Q)</span><span>도움말(H)</span></div>
+          <div class="hb"><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="sp"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="sp"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="sp"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="sp"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i></div>
+          <div class="hb"><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i><i class="ic" style="width:16px"></i></div>
+          <div class="hc"><div class="hpg">
+            <p class="c" style="font-size:15px;margin-bottom:22px">청렴은 교육의 기본가치입니다</p>
+            <p class="org">경기도구리남양주교육지원청</p>
+            <table class="hd"><tr><td class="l">수신</td><td>수신자 참조</td></tr><tr><td class="l">(경유)</td><td></td></tr><tr><td class="l">제목</td><td>[제출] 2027.3.1.자 공립 유·초등교원(특수, 보건, 사서, 전문상담, 영양교사 포함) 시·도간 교류 추진 계획 및 인사자료 제출 안내</td></tr></table>
+            <p>1. 관련: 교원인사정책과-29083(2026. 9. 30.)</p>
+            <p>2. 2027.3.1.자 공립 유·초등교원(특수, 보건, 사서, 전문상담, 영양교사 포함) 시·도간 교류 계획을 안내드리오니 일정에 따라 업무를 추진해주시기 바랍니다.</p>
+            <p class="i1"><b>가. 제출 대상: 공립 유·초등교원[특수(국립포함), 보건, 사서, 전문상담, 영양교사 포함]</b></p>
+            <p class="i1"><b>나. 시·도간 교류 추진 일정</b></p>
+            <table class="ht"><thead><tr><th>기간</th><th>주요업무내용</th><th>비고</th></tr></thead><tbody>
+              <tr><td>2026.10.12.(월)<br>~10.13.(화)</td><td class="t">○ G-인사이트 시·도간 교류 개요설정<br>※ 개요 미설정 시, 내신서 작성 불가<br>- 교육지원청 소속 교사(특수교육지원센터, WEE센터 등)의 경우, 해당교사 인사업무담당자의 학교 개요 설정 필요</td><td>교육지원청,학교<br>인사업무담당자</td></tr>
+              <tr><td>2026.10.14.(수)<br>~10.20.(화)</td><td class="t">○ 시·도간 교류 희망자 신청 접수</td><td>학교(유치원)<br>⇒교육지원청</td></tr></tbody></table>
+            <p class="i1"><b>다. 유의사항</b></p>
+            <p class="i2">1) 시도교류 매뉴얼은 NEIS사용자지원시스템(help.neis.go.kr)-자료광장-사용자설명서에 탑재<br>&nbsp;&nbsp;&nbsp;- 신청교원과 업무담당자는 추진 계획 및 매뉴얼 숙지 후 G-인사이트 입력</p>
+            <p class="i2">2) 서류 제출 마감 후 희망지 수정 절대 불가, 추가 접수 불가</p>
+            <p class="i2">3) 시·도간 교류 희망자 인원 현황 공개(2026.11.9.) 이후 포기 불가</p>
+            <p class="i2">4) 학교에서는 모든 소속교원(휴직, 파견, 휴가 중인 교사 등)에게 반드시 안내</p>
+            <p class="i2">5) 시도별 시·도간 교류 추진 계획은 서울특별시교육청 홈페이지에 탑재(2026.10.1.예정)</p>
+            <p class="i2">6) 경기도교육청과 국립특수학교 간 전출 희망자는 별도 문의</p>
+            <p class="i1"><b>라. 제출자료 및 방법</b></p>
+            <p class="i2">1) 전출 및 교환(파견) 근무 희망자</p>
+            <table class="ht"><thead><tr><th>구분</th><th>제출 서류</th><th>제출 기한</th><th>제출처</th><th>제출방법</th></tr></thead><tbody><tr><td>학교</td><td>타시‧도 교류 신청서 및 증빙 서류</td><td>10. 20.(화)</td><td>학교<br>→교육지원청</td><td></td></tr></tbody></table>
+            <p class="i2">2) 교환(파견) 근무 기간 만료자</p>
+            <table class="ht"><thead><tr><th>구분</th><th>제출 서류</th><th>제출 기한</th><th>제출처</th><th>제출방법</th></tr></thead><tbody><tr><td>학교</td><td class="t">[붙임2] 교환(파견) 복귀자 명부<br>&nbsp;- 시트1. 경기도로 복귀하는 자<br>&nbsp;- 시트2. 타·시도로 복귀하는 자<br>[붙임3] 교환(파견) 근무 복귀 신청서</td><td>10. 20.(화)</td><td>학교<br>→교육지원청</td><td>K-에듀파인</td></tr></tbody></table>
+            <p class="i1"><b>마. 문의처</b></p>
+            <p class="i2">1) 유치원: 초등교육지원과 장학사 ○○○(☏ 550-6121)<br>2) 초등(보건, 사서, 전문상담, 영양 포함): 초등교육지원과 주무관 ○○○(☏ 550-6120)<br>3) 특수: 초등교육지원과 장학사 ○○○(☏ 550-6124)<br>4) 사용에 따른 문의: NEIS사용자지원시스템(help.neis.go.kr), [붙임4] 참고</p>
+            <p style="margin-top:18px">붙임&nbsp; 1. 2027.3.1.자 공립 유·초등교원 시·도간 교류 추진 계획 1부.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 2027.3.1.자 시·도간 교환(파견) 복귀자 명부(서식) 1부.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 교환(파견) 근무 복귀 신청서(서식) 1부.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. G-인사이트 접속방법 및 문의사항 안내(학교안내용) 1부.&nbsp; 끝.</p>
+            <p style="margin-top:18px">본 문서는 생활교육과장, 공립유, 공립초, 특수학교에 발송합니다.</p>
+            <table class="ht sm"><tr><th>제출</th><th>출장</th><th>데이터집계</th><th>자체계획수립</th><th>위원회심의</th><th>교육과정반영</th><th>자체연수/안내</th><th>의견조사</th></tr><tr><td>○</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+          </div></div>
+          <div class="hs"><span>1쪽</span><span>1단</span><span>4줄 24칸</span><span>[본문]</span><span>1/1 구역</span><span>삽입</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre id="doc" hidden>1. 관련: 교원인사정책과-29083(2026. 9. 30.)
+2. 2027.3.1.자 공립 유·초등교원(특수, 보건, 사서, 전문상담, 영양교사 포함) 시·도간 교류 계획을 안내드리오니 일정에 따라 업무를 추진해주시기 바랍니다. 
+  가. 제출 대상: 공립 유·초등교원[특수(국립포함), 보건, 사서, 전문상담, 영양교사 포함]
+  나. 시·도간 교류 추진 일정
+    
+기간
+주요업무내용 
+비고
+2026.10.12.(월)
+    ~10.13.(화)
+○  시·도간 교류 개요설정
+※ 개요 미설정 시, 내신서 작성 불가
+- 교육지원청 소속 교사(특수교육지원센터, WEE센터 등)의 경우, 해당교사 인사업무담당자의 학교 개요 설정 필요
+교육지원청,학교
+인사업무담당자 
+2026.10.14.(수)
+    ~10.20.(화)
+○  시·도간 교류 희망자 신청 접수 
+학교(유치원)
+⇒교육지원청
+  
+  다. 유의사항
+    1)  시도교류 매뉴얼은 NEIS사용자지원시스템(help.neis.go.kr)-자료광장-사용자설명서에 탑재
+       - 신청교원과 업무담당자는 추진 계획 및 매뉴얼 숙지 후 G-인사이트 입력
+    2) 서류 제출 마감 후 희망지 수정 절대 불가, 추가 접수 불가
+    3) 시·도간 교류 희망자 인원 현황 공개(2026.11.9.) 이후 포기 불가
+    4) 학교에서는 모든 소속교원(휴직, 파견, 휴가 중인 교사 등)에게 반드시 안내
+    5) 시도별 시·도간 교류 추진 계획은 서울특별시교육청 홈페이지에 탑재(2026.10.1.예정)
+    6) 경기도교육청과 국립특수학교 간 전출 희망자는 별도 문의
 
-1. 목적
-  교원의 적정 배치와 학교 간 균형 있는 인력 운영을 위하여 2027. 3. 1.자 정기 전보를 실시한다.
+  라. 제출자료 및 방법
+    1) 전출 및 교환(파견) 근무 희망자
+    
+구분
+제출 서류
+제출 기한
+제출처
+제출방법
+학교
+타시‧도 교류 신청서 및 증빙 서류
+10. 20.(화)
+학교
+→교육지원청
 
-2. 근무기간 산정
-  가. 기준일: 2027. 2. 28.
-  나. 현임교 근무기간은 현 학교 발령일부터 기준일까지로 하며, 월 단위로 계산한다.
-  다. 1개월 미만의 기간은 버린다.
-  라. 휴직 기간은 근무기간에 포함한다.
 
-3. 전보 유형
-  가. 만기 전보: 동일 학교 근무기간이 5년 이상인 교원
-  나. 희망 전보: 동일 학교 근무기간이 2년 이상인 교원 중 전보를 희망하는 교원
-  다. 만기 유예: 학교 교육과정 운영상 꼭 필요한 경우 학교장이 1년 범위에서 유예를 신청할 수 있다.
+    2) 교환(파견) 근무 기간 만료자
+    
+구분
+제출 서류
+제출 기한
+제출처
+제출방법
+학교
+[붙임2] 교환(파견) 복귀자 명부
+ - 시트1. 경기도로 복귀하는 자
+ - 시트2. 타·시도로 복귀하는 자
+[붙임3] 교환(파견) 근무 복귀 신청서
+10. 20.(화)
+학교
+→교육지원청
+K-에듀파인
+           
+  마. 문의처
+    1) 유치원: 초등교육지원과 장학사 ○○○(☏ 550-6121)
+    2) 초등(보건, 사서, 전문상담, 영양 포함): 초등교육지원과 주무관 ○○○(☏ 550-6120)
+    3) 특수: 초등교육지원과 장학사 ○○○(☏ 550-6124)
+    4)  사용에 따른 문의: NEIS사용자지원시스템(help.neis.go.kr), [붙임4] 참고
 
-4. 추진 일정
-  가. 전보 대상자 안내(학교 → 교원): 2026. 12. 1.(화) ~ 12. 4.(금)
-  나. 내신서 작성·제출(교원 → 학교): 2026. 12. 7.(월) ~ 12. 11.(금)
-  다. 학교 확인 후 교육지원청 제출: 2026. 12. 14.(월) ~ 12. 18.(금)
-  라. 전보 발표: 2027. 2. 중순 예정
+붙임  1. 2027.3.1.자 공립 유·초등교원 시·도간 교류 추진 계획 1부.
+      2. 2027.3.1.자 시·도간 교환(파견) 복귀자 명부(서식) 1부.
+      3. 교환(파견) 근무 복귀 신청서(서식) 1부.
+      4. G-인사이트 접속방법 및 문의사항 안내(학교안내용) 1부.  끝.
 
-5. 올해 달라진 점
-  가. 내신서 제출을 온라인 시스템으로 일원화한다(종이 내신서 폐지).
-  나. 희망 전보 지망 학교를 3개교에서 5개교로 늘린다.
-  다. 만기 유예 신청 사유를 '교육과정 운영상 필요'로 한정한다.
 
-6. 학교 확인 사항(교감)
-  가. 전보 대상자 명단과 근무기간이 맞는지 확인한다.
-  나. 기간 내 내신서 제출을 안내하고 미제출자를 확인한다.
-  다. 내신서의 개인정보가 외부로 나가지 않도록 관리한다.
-
-7. 문의: 교육지원청 초등교육지원과 인사 담당</pre></div>
-</div></section>
+본 문서는 생활교육과장, 공립유, 공립초, 특수학교에 발송합니다.
+제출
+출장
+데이터집계
+자체계획수립
+위원회심의
+교육과정반영
+자체연수/안내
+의견조사
+○</pre>
+</section>
 
 <!-- 5 1-1 -->
 <section class="slide" data-sec="p1" data-t="1-1 딸각"><div class="two">
   <div><p class="k">1-1</p><h2>딸각: 붙여넣고 요약하기</h2>
-    <p class="d">자료와 요청이 한 번에 복사됩니다. 세 AI에 똑같이 붙여넣고 결과를 비교해 보세요.</p>
+    <p class="d">에듀파인에서 복사한 본문과 요청이 한 번에 복사됩니다. 세 AI에 똑같이 붙여넣고 결과를 비교해 보세요.</p>
     <div class="links"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a></div>
     <div class="links" style="margin-top:22px"><button class="pill done-b" data-k="p1-1">완료</button></div></div>
   <div class="chat">
-    <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
+    <div class="att"><i>T</i><div><b>시·도간 교류 공문 (본문복사)</b><small>붙여넣은 텍스트</small></div></div>
     <div class="u" id="u11" data-ek>위 내용을 요약해줘.</div>
     <div class="acts"><button class="cp" data-t="u11" data-doc="1">⧉ 자료 + 요청 복사</button></div>
     <p class="note">세 AI의 길이, 순서, 빠뜨린 내용이 어떻게 다른가요?</p>
@@ -314,8 +493,8 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <div class="u" id="u12" data-ek>교장선생님께 보고할 거야. 핵심만 3줄로 요약하고, 일정은 표로 정리해줘.</div>
     <div class="acts"><button class="cp" data-t="u12">⧉ 복사</button></div>
     <div class="a">
-      <p data-ek>1. 2027. 3. 1.자 정기 전보는 근무기간 기준일 2027. 2. 28.로 진행됩니다.<br>2. 동일 학교 5년 이상은 만기, 2년 이상은 희망 전보 대상이며 희망 지망이 5개교로 늘었습니다.<br>3. 내신서는 온라인으로만 받으며, 학교는 12. 18.까지 교육지원청에 제출합니다.</p>
-      <table><thead><tr><th>일정</th><th>내용</th></tr></thead><tbody><tr><td class="nw" data-ek>12. 1.~12. 4.</td><td data-ek>대상자 안내</td></tr><tr><td class="nw" data-ek>12. 7.~12. 11.</td><td data-ek>교원 내신서 제출</td></tr><tr><td class="nw" data-ek>12. 14.~12. 18.</td><td data-ek>교육지원청 제출</td></tr><tr><td class="nw" data-ek>2월 중순</td><td data-ek>전보 발표</td></tr></tbody></table>
+      <p data-ek>1. 2027.3.1.자 공립 유·초등교원 시·도간 교류 안내이며, 특수·보건·사서·전문상담·영양교사도 대상입니다.<br>2. 학교는 G-인사이트 개요를 설정하고, 희망자 신청서와 교환(파견) 복귀 서류를 10. 20.까지 교육지원청에 제출합니다.<br>3. 마감 후 희망지 수정·추가 접수가 불가하며, 휴직·파견 중인 교원까지 모두에게 안내해야 합니다.</p>
+      <table><thead><tr><th>일정</th><th>내용</th></tr></thead><tbody><tr><td class="nw" data-ek>10. 12.~10. 13.</td><td data-ek>G-인사이트 개요 설정 (인사업무담당자)</td></tr><tr><td class="nw" data-ek>10. 14.~10. 20.</td><td data-ek>희망자 신청 접수, 서류 제출</td></tr><tr><td class="nw" data-ek>11. 9.</td><td data-ek>희망자 인원 현황 공개, 이후 포기 불가</td></tr></tbody></table>
     </div>
   </div>
 </div></section>
@@ -328,7 +507,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   <div class="chat">
     <div class="u" id="u13" data-ek>이 내용을 교직원 메신저로 보낼 안내문 초안으로 써줘. 정중한 말투로, 제출 기한은 굵게, 300자 이내로.</div>
     <div class="acts"><button class="cp" data-t="u13">⧉ 복사</button></div>
-    <div class="a"><p data-ek>선생님들께 안내드립니다.<br>2027. 3. 1.자 정기 전보 내신서를 <b>12월 11일(금)까지</b> 온라인 시스템으로 제출해 주시기 바랍니다. 올해부터 종이 내신서는 받지 않으며, 희망 전보 지망 학교는 5개교까지 쓸 수 있습니다. 동일 학교 5년 이상 근무하신 선생님은 만기 전보 대상입니다. 궁금한 점은 교무실로 문의해 주세요. 감사합니다.</p></div>
+    <div class="a"><p data-ek>선생님들께 안내드립니다.<br>2027.3.1.자 시·도간 교류를 희망하시는 선생님은 신청서와 증빙 서류를 <b>10월 20일(화)까지</b> 교무실로 제출해 주시기 바랍니다. 마감 후에는 희망지 수정과 추가 접수가 불가하며, 11월 9일 인원 현황 공개 이후에는 포기할 수 없습니다. 휴직·파견 중인 선생님께도 꼭 전해 주세요. 감사합니다.</p></div>
   </div>
 </div></section>
 
@@ -338,9 +517,9 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <p class="d">ChatGPT에서 새 채팅을 열고 자료 없이 질문해 보세요.</p>
     <div class="links"><a class="pill" href="https://chatgpt.com" target="_blank" rel="noopener">ChatGPT 새 채팅</a></div></div>
   <div class="chat">
-    <div class="u" id="u14" data-ek>경기도 초등 교원 전보에서 동일 학교 만기는 몇 년이고, 근무기간은 언제까지 계산해?</div>
+    <div class="u" id="u14" data-ek>경기도 초등교원 시·도간 교류 신청은 언제까지 하고, 마감 후에 희망지를 바꿀 수 있어?</div>
     <div class="acts"><button class="cp" data-t="u14">⧉ 복사</button></div>
-    <div class="a"><p class="note r" data-ek>그럴듯한 답이 나옵니다. 그런데 그 근거는 어디에 있을까요? 올해 기준이 맞을까요?</p></div>
+    <div class="a"><p class="note r" data-ek>그럴듯한 답이 나옵니다. 그런데 그 근거는 어디에 있을까요? 올해 공문과 맞을까요?</p></div>
   </div>
 </div></section>
 
@@ -348,14 +527,14 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 <section class="slide" data-sec="p1" data-t="1-4 NotebookLM"><div class="two">
   <div><p class="k">1-4</p><h2>NotebookLM: 자료를 주고 묻기</h2>
     <ol class="d" style="padding-left:1.2em;margin:0 0 18px">
-      <li data-ek>새 노트북 만들기</li><li data-ek>소스 추가 → <b>복사된 텍스트</b></li><li data-ek>실습 자료 붙여넣기</li><li data-ek>질문하고, 답의 번호를 눌러 근거 확인</li></ol>
-    <div class="links"><button class="pill cp2" data-t="doc">자료 복사</button><a class="pill" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a><button class="pill done-b" data-k="p1-4">완료</button></div></div>
+      <li data-ek>새 노트북 만들기</li><li data-ek>소스 추가 → <b>복사된 텍스트</b></li><li data-ek>에듀파인에서 복사한 본문 붙여넣기</li><li data-ek>질문하고, 답의 번호를 눌러 근거 확인</li></ol>
+    <div class="links"><button class="pill cp2" data-t="doc">본문 복사</button><a class="pill" href="https://notebooklm.google.com" target="_blank" rel="noopener">NotebookLM</a><button class="pill done-b" data-k="p1-4">완료</button></div></div>
   <div class="chat">
-    <div class="u" id="u15" data-ek>2022년 9월 1일에 지금 학교로 온 선생님은 기준일에 근무기간이 얼마나 되고, 어떤 전보를 신청할 수 있어?</div>
+    <div class="u" id="u15" data-ek>교환(파견) 근무 기간이 끝나는 선생님은 어떤 서류를 언제까지 어디로 내야 해?</div>
     <div class="acts"><button class="cp" data-t="u15">⧉ 복사</button></div>
-    <div class="u" id="u16" data-ek>교감이 12월에 챙겨야 할 일을 날짜순으로 정리해줘.</div>
+    <div class="u" id="u16" data-ek>교감이 이 공문으로 챙겨야 할 일을 날짜순으로 정리해줘.</div>
     <div class="acts"><button class="cp" data-t="u16">⧉ 복사</button></div>
-    <div class="u" id="u17" data-ek>올해 달라진 점 3가지를 작년과 비교해서 설명해줘.</div>
+    <div class="u" id="u17" data-ek>희망자 인원 현황이 공개된 뒤에도 신청을 포기할 수 있어? 근거 문장도 알려줘.</div>
     <div class="acts"><button class="cp" data-t="u17">⧉ 복사</button></div>
   </div>
 </div></section>
@@ -365,14 +544,14 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   <div><p class="k">2단계 · 30분</p><h2>안내·홍보 자료</h2>
     <p class="d">1단계 대화창에 이어서 넣습니다. 장 수와 줄 수를 정해 주면 바로 쓸 수 있는 문구가 나옵니다.</p>
     <div class="chat" style="margin-top:10px">
-      <div class="u" id="u21" data-ek>이 전보 안내를 교직원용 카드뉴스 4장으로 만들 거야. 장마다 제목 1줄, 본문 2줄 이내로 문구를 써줘.</div>
+      <div class="u" id="u21" data-ek>이 공문을 교직원용 카드뉴스 4장으로 만들 거야. 장마다 제목 1줄, 본문 2줄 이내로 문구를 써줘.</div>
       <div class="acts"><button class="cp" data-t="u21">⧉ 복사</button><button class="pill done-b" data-k="p2-1">완료</button></div></div></div>
   <div><div class="cards">
-    <div class="card"><small>1/4</small><h4 data-ek>2027. 3. 1.자 정기 전보, 이렇게 진행합니다</h4><p data-ek>내신서는 올해부터 온라인으로만 받습니다.</p></div>
-    <div class="card"><small>2/4</small><h4 data-ek>기준일은 2027. 2. 28.</h4><p data-ek>월 단위로 계산하고, 1개월 미만은 버립니다.</p></div>
-    <div class="card"><small>3/4</small><h4 data-ek>5년이면 만기, 2년부터 희망</h4><p data-ek>희망 지망은 5개교까지 쓸 수 있습니다.</p></div>
-    <div class="card"><small>4/4</small><h4 data-ek>12. 11.(금)까지 제출</h4><p data-ek>학교는 12. 18.까지 교육지원청에 제출합니다.</p></div>
-  </div><p class="smp" style="margin-top:12px">완성본 예시 · 실습용 가상 내용</p></div>
+    <div class="card"><small>1/4</small><h4 data-ek>2027.3.1.자 시·도간 교류 신청 안내</h4><p data-ek>특수·보건·사서·전문상담·영양교사도 대상입니다.</p></div>
+    <div class="card"><small>2/4</small><h4 data-ek>신청은 10. 14.~10. 20.</h4><p data-ek>신청서와 증빙 서류를 학교로 내 주세요.</p></div>
+    <div class="card"><small>3/4</small><h4 data-ek>마감 후 수정·추가 불가</h4><p data-ek>11. 9. 인원 공개 뒤에는 포기도 안 됩니다.</p></div>
+    <div class="card"><small>4/4</small><h4 data-ek>휴직·파견 중이어도 안내</h4><p data-ek>모든 소속교원에게 꼭 전달해 주세요.</p></div>
+  </div><p class="smp" style="margin-top:12px">완성본 예시 · 실습 공문 기준</p></div>
 </div></section>
 
 <!-- 11 2-2 -->
@@ -402,7 +581,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <p class="note" data-ek>영상 속 한글 글자는 잘 깨집니다. 글자는 넣지 말고 장면만 만드세요.</p></div>
   <div class="chat">
     <p class="k" style="align-self:flex-end;margin:0">① Claude·Gemini에게 영상 프롬프트 부탁하기</p>
-    <div class="u" id="u24" data-ek>교직원 대상 전보 안내 영상의 도입 장면을 Google Flow 영상 프롬프트로 써줘. 8초, 장면·카메라 움직임·조명·소리를 넣고, 화면에 글자는 넣지 마. 영어 프롬프트와 한국어 설명을 함께.</div>
+    <div class="u" id="u24" data-ek>교직원 대상 시·도간 교류 안내 영상의 도입 장면을 Google Flow 영상 프롬프트로 써줘. 8초, 장면·카메라 움직임·조명·소리를 넣고, 화면에 글자는 넣지 마. 영어 프롬프트와 한국어 설명을 함께.</div>
     <div class="acts"><button class="cp" data-t="u24">⧉ 복사</button></div>
     <p class="k" style="align-self:flex-end;margin:6px 0 0">② 바로 쓰는 예시 프롬프트 (Flow에 붙여넣기)</p>
     <div class="u" id="u25" style="font-size:23px" data-ek>A warm, sunlit elementary school hallway on an early spring morning. The camera slowly dollies forward past classroom doors toward a tidy bulletin board. Soft golden light pours through tall windows. Quiet ambient sound: distant children's laughter and birds chirping. No text on screen.</div>
@@ -415,35 +594,35 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   <div><p class="k">2-5 · Claude 모션그래픽</p><h2><span class="plus">+움직임</span><br>숫자가 움직이는<br>안내 화면</h2>
     <p class="d">Claude는 영상 대신 코드로 움직이는 화면을 만듭니다. 날짜와 숫자가 정확하고, 말로 바로 고칠 수 있습니다.</p>
     <div class="chat">
-      <div class="u" id="u26" style="font-size:24px" data-ek>위 전보 안내 핵심 4가지를 15초 모션그래픽으로 만들어줘. HTML 한 파일, 16:9, 검정 바탕에 흰 글씨와 초록 포인트, 날짜와 숫자가 크게 튀어나오는 애니메이션, 장면마다 3~4초, 끝나면 처음부터 반복.</div>
+      <div class="u" id="u26" style="font-size:24px" data-ek>위 공문 핵심 4가지를 15초 모션그래픽으로 만들어줘. HTML 한 파일, 16:9, 검정 바탕에 흰 글씨와 초록 포인트, 날짜와 숫자가 크게 튀어나오는 애니메이션, 장면마다 3~4초, 끝나면 처음부터 반복.</div>
       <div class="acts"><button class="cp" data-t="u26" data-doc="1">⧉ 자료 + 요청 복사</button></div>
-      <div class="u" id="u27" style="font-size:24px" data-ek>두 번째 장면은 조금 더 천천히, 마지막에 '내신서는 온라인으로'를 넣어줘.</div>
+      <div class="u" id="u27" style="font-size:24px" data-ek>두 번째 장면은 조금 더 천천히, 마지막에 '모든 소속교원에게 안내'를 넣어줘.</div>
       <div class="acts"><button class="cp" data-t="u27">⧉ 복사</button><button class="pill done-b" data-k="p2-5">완료</button></div></div></div>
   <div class="widget">
     <div class="mg" id="mg">
       <span class="no" id="mgNo">1 / 4</span>
-      <div class="sc"><i></i><b>2027. 2. 28.</b><span>근무기간 기준일</span></div>
-      <div class="sc"><i></i><b>5년</b><span>같은 학교 5년이면 만기 전보</span></div>
-      <div class="sc"><i></i><b>2년 · 5개교</b><span>희망 전보는 2년부터, 지망은 5개교까지</span></div>
-      <div class="sc"><i></i><b>12. 11.(금)</b><span>내신서 온라인 제출 마감</span></div>
+      <div class="sc"><i></i><b>10. 12.~13.</b><span>G-인사이트 개요 설정</span></div>
+      <div class="sc"><i></i><b>10. 14.~20.</b><span>시·도간 교류 희망자 신청 접수</span></div>
+      <div class="sc"><i></i><b>10. 20.(화)</b><span>신청서·복귀 서류 제출 마감</span></div>
+      <div class="sc"><i></i><b>11. 9.</b><span>인원 현황 공개, 이후 포기 불가</span></div>
       <div class="bar2" id="mgBar"></div>
     </div>
     <table class="cmp"><thead><tr><th></th><th>Flow 영상</th><th>Claude 모션그래픽</th></tr></thead><tbody>
       <tr><td class="nw">잘하는 것</td><td>실사 같은 장면, 소리</td><td>정확한 글자·숫자, 바로 수정</td></tr>
       <tr><td class="nw">어울리는 곳</td><td>행사 홍보, 수업 도입</td><td>회의 안내, 일정·수치 강조</td></tr></tbody></table>
-    <p class="smp" style="margin-top:10px">완성본 예시 · 실습용 가상 내용</p></div>
+    <p class="smp" style="margin-top:10px">완성본 예시 · 실습 공문 기준</p></div>
 </div></section>
 
 <!-- 12 3-1 -->
 <section class="slide" data-sec="p3" data-t="3-1 +HTML"><div class="two">
   <div><p class="k">3단계 · 15분</p><h2><span class="plus">+HTML</span><br>회의 발표 자료</h2>
     <div class="chat">
-      <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
-      <div class="u" id="u31" data-ek>위 전보 안내 내용을 교직원 회의 화면에 띄울 HTML 발표 자료로 만들어줘. 6장, 키보드 방향키로 넘기기, 큰 글씨, 장마다 핵심 한 문장만.</div>
+      <div class="att"><i>T</i><div><b>시·도간 교류 공문 (본문복사)</b><small>붙여넣은 텍스트</small></div></div>
+      <div class="u" id="u31" data-ek>위 공문 내용을 교직원 회의 화면에 띄울 HTML 발표 자료로 만들어줘. 6장, 키보드 방향키로 넘기기, 큰 글씨, 장마다 핵심 한 문장만.</div>
       <div class="acts"><button class="cp" data-t="u31" data-doc="1">⧉ 자료 + 요청 복사</button><button class="pill done-b" data-k="p3-1">완료</button></div></div>
     <p class="note" data-ek>Gemini는 입력창 아래 도구에서 Canvas를 켜면 미리보기가 열립니다.</p></div>
   <div class="widget"><div class="mdeck" id="mdeck"></div>
-    <div class="links" style="justify-content:space-between;align-items:center"><span class="smp">완성본 예시 · 실습용 가상 내용</span><span><button class="pill" id="mPrev">← 이전</button> <button class="pill" id="mNext">다음 →</button></span></div></div>
+    <div class="links" style="justify-content:space-between;align-items:center"><span class="smp">완성본 예시 · 실습 공문 기준</span><span><button class="pill" id="mPrev">← 이전</button> <button class="pill" id="mNext">다음 →</button></span></div></div>
 </div></section>
 
 <!-- 13 3-2 -->
@@ -468,7 +647,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <div class="q" id="qq"></div>
     <div class="ox"><button id="bo">O</button><button id="bx">X</button></div>
     <div class="fb" id="fb"></div>
-    <div class="qrow" style="margin-top:24px"><span class="smp">실습 자료 기준 문항입니다</span><span><button class="pill showres" data-tab="quiz">참여 결과</button> <button class="pill" id="qr">처음부터</button> <button class="pill dark" id="qnx">다음 문제</button></span></div>
+    <div class="qrow" style="margin-top:24px"><span class="smp">실습 공문 기준 문항입니다</span><span><button class="pill showres" data-tab="quiz">참여 결과</button> <button class="pill" id="qr">처음부터</button> <button class="pill dark" id="qnx">다음 문제</button></span></div>
   </div>
 </div></section>
 
@@ -486,34 +665,31 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
   </div>
 </div></section>
 
-<!-- 16 계산기 -->
-<section class="slide" data-sec="p5" data-t="계산기 체험"><div class="full">
-  <div><p class="k">5단계 · 20분 · 완성본 먼저 써 보기</p><h2 style="margin-bottom:8px">근무기간·만기 계산기</h2></div>
+<!-- 16 현황판 -->
+<section class="slide" data-sec="p5" data-t="현황판 체험"><div class="full">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px"><div><p class="k">5단계 · 20분 · 완성본 먼저 써 보기</p><h2 style="margin-bottom:8px">시·도간 교류 제출 현황판</h2></div><span class="smp">이름은 모두 가상 인물입니다</span></div>
   <div class="calc widget">
     <div class="set">
-      <div class="big r" id="sA">0명</div><div style="font-size:22px">만기 전보 대상</div>
-      <div class="big g" id="sB" style="margin-top:20px">0명</div><div style="font-size:22px">희망 전보 신청 가능</div>
-      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
-        <div style="grid-column:1/-1"><label for="cBase">기준일</label><input type="date" id="cBase" value="2027-02-28"></div>
-        <div><label for="cMax">만기(년)</label><input type="number" id="cMax" value="5" min="1" max="10"></div>
-        <div><label for="cMin">희망(년)</label><input type="number" id="cMin" value="2" min="0" max="10"></div>
-      </div>
+      <div class="big g" id="sA">0/0</div><div style="font-size:22px">안내 완료 (모든 소속교원)</div>
+      <div class="big r" id="sB" style="margin-top:20px">0명</div><div style="font-size:22px">서류가 부족한 신청자</div>
+      <div class="big" id="sC" style="margin-top:20px">D-0</div><div style="font-size:22px">제출 마감 10. 20.(화)까지</div>
+      <label for="cToday">오늘 날짜</label><input type="date" id="cToday" value="2026-10-15">
     </div>
     <div>
-      <table class="tb ct"><thead><tr><th>이름 (가상)</th><th>현임교 발령일</th><th>근무기간</th><th>만기</th><th>희망</th><th></th></tr></thead><tbody id="cRows"></tbody></table>
+      <table class="tb ct"><thead><tr><th>이름 (가상)</th><th>구분</th><th>안내</th><th>제출 서류</th><th>상태</th><th></th></tr></thead><tbody id="cRows"></tbody></table>
       <div class="links"><button class="pill" id="cAdd">+ 한 명 추가</button><button class="pill dark" id="cCopy">표 복사 (엑셀에 붙여넣기)</button><button class="pill" id="cReset">예시로 되돌리기</button></div>
     </div>
   </div>
 </div></section>
 
-<!-- 17 5-1 -->
+<!-- 17 5-1 --><!-- 17 5-1 -->
 <section class="slide" data-sec="p5" data-t="5-1 +기능"><div class="two">
-  <div><p class="k">5-1</p><h2><span class="plus">+기능</span><br>계산기 만들기</h2>
+  <div><p class="k">5-1</p><h2><span class="plus">+기능</span><br>제출 현황판 만들기</h2>
     <p class="d">새 채팅에 자료와 함께 넣습니다. 무엇을 넣으면 무엇이 나와야 하는지만 말하면 됩니다.</p>
     <div class="links"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><button class="pill done-b" data-k="p5-1">완료</button></div></div>
   <div class="chat">
-    <div class="att"><i>T</i><div><b>전보 업무 안내 (실습 자료)</b><small>붙여넣은 텍스트</small></div></div>
-    <div class="u" id="u51" data-ek>위 기준으로 '근무기간·만기 계산기' 웹앱을 만들어줘. 이름과 현 학교 발령일을 넣으면 기준일(2027. 2. 28.)까지 근무기간을 ○년 ○개월로 보여주고, 만기 전보 대상인지, 희망 전보 신청이 가능한지 표시해줘.</div>
+    <div class="att"><i>T</i><div><b>시·도간 교류 공문 (본문복사)</b><small>붙여넣은 텍스트</small></div></div>
+    <div class="u" id="u51" data-ek>위 공문을 바탕으로 '시·도간 교류 제출 현황판' 웹앱을 만들어줘. 교사 이름과 구분(전출·교환 희망 / 교환(파견) 만료 복귀 / 해당 없음)을 고르면 필요한 제출 서류가 체크리스트로 나오고, 모든 교원에게 안내했는지 체크하고, 마감일(10. 20.)까지 남은 날짜와 서류가 부족한 인원을 보여줘.</div>
     <div class="acts"><button class="cp" data-t="u51" data-doc="1">⧉ 자료 + 요청 복사</button></div>
   </div>
 </div></section>
@@ -528,25 +704,25 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <div class="acts"><button class="cp" data-t="u52">⧉ 복사</button></div>
     <div class="u" id="u53" data-ek>표를 복사해서 엑셀에 바로 붙여넣을 수 있는 '복사' 버튼을 만들어줘.</div>
     <div class="acts"><button class="cp" data-t="u53">⧉ 복사</button></div>
-    <div class="u" id="u54" data-ek>만기 전보 대상은 빨간색, 희망 전보 가능은 초록색으로 표시해줘.</div>
+    <div class="u" id="u54" data-ek>서류가 부족한 사람은 빨간색, 제출 완료는 초록색으로 표시해줘.</div>
     <div class="acts"><button class="cp" data-t="u54">⧉ 복사</button></div>
   </div>
 </div></section>
 
 <!-- 19 5-3 -->
 <section class="slide" data-sec="p5" data-t="5-3 검증"><div class="two">
-  <div><p class="k">5-3 · 5-4</p><h2>계산이 맞나요?</h2>
-    <p class="d">AI가 만든 계산기도 틀릴 수 있습니다. 같은 사례를 내 계산기, 완성본, NotebookLM에 넣어 맞춰 봅니다.</p>
-    <p class="note" data-ek>강사 시연: 지금 만든 웹앱은 각자 화면에서만 동작합니다. 여러 사람의 입력이 한곳에 모이게 하려면 구글 시트와 연결해야 합니다. 예: 내신서 제출 확인, 연수 신청, 회의실 예약</p>
+  <div><p class="k">5-3 · 5-4</p><h2>앱이 공문과 맞나요?</h2>
+    <p class="d">AI가 만든 앱도 틀릴 수 있습니다. 내 앱의 체크리스트를 공문, 그리고 NotebookLM의 답과 하나씩 맞춰 봅니다.</p>
+    <p class="note" data-ek>강사 시연: 지금 만든 웹앱은 각자 화면에서만 동작합니다. 여러 선생님의 제출 여부가 한곳에 모이게 하려면 구글 시트와 연결해야 합니다.</p>
     <div class="links"><button class="pill done-b" data-k="p5-3">완료</button></div></div>
-  <div><table class="tb"><thead><tr><th>발령일</th><th>정답 (실습 자료 기준)</th></tr></thead><tbody>
-    <tr><td class="nw" data-ek>2021. 3. 1.</td><td data-ek>6년 0개월 · 만기 대상</td></tr>
-    <tr><td class="nw" data-ek>2022. 9. 1.</td><td data-ek>4년 6개월 · 희망 전보 가능</td></tr>
-    <tr><td class="nw" data-ek>2022. 3. 15.</td><td data-ek>4년 11개월 · 희망 전보 가능 (1개월 미만 버림)</td></tr>
-    <tr><td class="nw" data-ek>2026. 3. 1.</td><td data-ek>1년 0개월 · 희망 전보 불가</td></tr></tbody></table></div>
+  <div><table class="tb"><thead><tr><th>확인할 것</th><th>공문 기준</th></tr></thead><tbody>
+    <tr><td data-ek>전출·교환 희망자</td><td data-ek>타시‧도 교류 신청서 및 증빙 서류, 10. 20.(화)까지</td></tr>
+    <tr><td data-ek>교환(파견) 만료자</td><td data-ek>[붙임2] 복귀자 명부, [붙임3] 복귀 신청서, 10. 20.(화)까지 K-에듀파인</td></tr>
+    <tr><td data-ek>휴직·파견 중인 교원</td><td data-ek>안내 대상에 포함 (모든 소속교원에게 반드시 안내)</td></tr>
+    <tr><td data-ek>마감 뒤</td><td data-ek>희망지 수정·추가 접수 불가, 11. 9. 이후 포기 불가</td></tr></tbody></table></div>
 </div></section>
 
-<!-- 20 치트시트 -->
+<!-- 20 치트시트 --><!-- 20 치트시트 -->
 <section class="slide" data-sec="p6" data-t="프롬프트 사다리"><div class="full">
   <h2 style="margin-bottom:0">오늘 올라온 계단: 자료 위에 한 줄씩</h2>
   <table class="tb" id="cheat"><thead><tr><th>단계</th><th>더하는 한 줄</th><th>예시</th></tr></thead><tbody>
@@ -559,7 +735,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
     <tr><td class="nw" data-ek>+움직임</td><td data-ek>길이, 장면 수, 무엇이 튀어나올지</td><td data-ek>15초 모션그래픽, 숫자가 크게 튀어나오게.</td></tr>
     <tr><td class="nw" data-ek>+HTML</td><td data-ek>HTML로, 장 수, 넘기기</td><td data-ek>HTML 발표 자료 6장, 방향키로 넘기기.</td></tr>
     <tr><td class="nw" data-ek>+상호작용</td><td data-ek>누르면 무엇이 나오는지</td><td data-ek>OX를 누르면 정답과 근거가 나오게.</td></tr>
-    <tr><td class="nw" data-ek>+기능</td><td data-ek>넣으면 무엇이 나오는지</td><td data-ek>발령일을 넣으면 근무기간과 만기 여부가 나오게.</td></tr>
+    <tr><td class="nw" data-ek>+기능</td><td data-ek>넣으면 무엇이 나오는지</td><td data-ek>구분을 고르면 필요한 서류와 남은 날짜가 나오게.</td></tr>
   </tbody></table>
   <div class="links"><button class="pill dark cp2" data-t="cheat">표 복사</button></div>
 </div></section>
@@ -623,7 +799,7 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 <script>
 {
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const VER='v3';
+const VER='v4';
 const store={get(k,d){try{const v=localStorage.getItem('adminkit2:'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('adminkit2:'+k,JSON.stringify(v))}catch(e){}}};
 const stage=$('#stage');
 const secs=[['start','시작',10],['p1','1 업무·보고서',20],['p2','2 안내·홍보·영상',30],['p3','3 HTML 발표',15],['p4','4 참여형 퀴즈',10],['p5','5 업무 웹앱',20],['p6','마무리',10]];
@@ -654,10 +830,10 @@ $$('input[data-k]').forEach(i=>{i.checked=!!store.get(i.dataset.k,false);i.addEv
 async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
 function tText(t){return [...t.rows].map(r=>[...r.cells].map(c=>c.textContent.trim()).join('\t')).join('\n')}
 function flash(b,ok){if(!b.dataset.o)b.dataset.o=b.textContent;b.textContent=ok?'✓ 복사됨':'복사가 막혔어요';b.classList.add('ok');setTimeout(()=>{b.textContent=b.dataset.o;b.classList.remove('ok')},1500)}
-document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2');if(!b||!b.dataset.t)return;const el=document.getElementById(b.dataset.t);let t=el.tagName==='TABLE'?tText(el):el.tagName==='TEXTAREA'?el.value:el.innerText;if(b.dataset.doc)t=$('#doc').innerText+'\n\n'+t;flash(b,await copyText(t.trim()))});
+document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2');if(!b||!b.dataset.t)return;const el=document.getElementById(b.dataset.t);let t=el.tagName==='TABLE'?tText(el):el.tagName==='TEXTAREA'?el.value:el.id==='doc'?el.textContent:el.innerText;if(b.dataset.doc)t=$('#doc').textContent+'\n\n'+t;const ok=await copyText(el.id==='doc'&&!b.dataset.doc?t:t.trim());flash(b,ok);if(b.classList.contains('ef-copy')&&ok)toast('본문이 클립보드에 복사되었습니다')});
 
 /* 미니 슬라이드 */
-const md=[['2027. 3. 1.자 정기 전보 안내','교직원 회의 · 12월 첫째 주'],['기준일은 2027년 2월 28일','월 단위로 계산하고, 1개월 미만은 버립니다.'],['같은 학교 5년이면 만기','만기 유예는 교육과정 운영상 꼭 필요할 때만 1년 범위에서.'],['희망 전보는 2년부터, 5개교까지','올해부터 지망 학교가 3개교에서 5개교로 늘었습니다.'],['내신서는 12월 11일(금)까지','온라인으로만 받고, 학교는 12월 18일까지 제출합니다.'],['궁금한 점은 교무실로','문의: 교무실 내선 201']];
+const md=[['2027.3.1.자 시·도간 교류 안내','교직원 회의 · 10월 둘째 주'],['대상: 공립 유·초등교원 모두','특수(국립 포함)·보건·사서·전문상담·영양교사 포함'],['신청은 10월 14일~20일','신청서와 증빙 서류를 학교를 거쳐 교육지원청으로'],['마감 후에는 수정·추가 불가','11월 9일 인원 공개 뒤에는 포기할 수 없습니다.'],['교환·파견 만료자도 서류 제출','복귀자 명부와 복귀 신청서를 10월 20일까지'],['궁금한 점은 교무실로','문의: 교무실 내선 201']];
 let mi=0;function drawM(){$('#mdeck').innerHTML='<h4>'+md[mi][0]+'</h4><p>'+md[mi][1]+'</p><span class="pg">'+(mi+1)+' / '+md.length+'</span>'}
 $('#mPrev').onclick=()=>{mi=Math.max(0,mi-1);drawM()};$('#mNext').onclick=()=>{mi=Math.min(md.length-1,mi+1);drawM()};drawM();
 
@@ -667,7 +843,7 @@ function mgGo(){mgS.forEach((x,j)=>x.classList.toggle('on',j===mgI));$('#mgNo').
 mgGo();setInterval(()=>{if(slides[cur]&&slides[cur].contains($('#mg')))mgGo()},3500);
 
 /* 퀴즈 */
-const qs=[['근무기간을 계산하는 기준일은 2027년 3월 1일이다.','X','기준일은 2027. 2. 28.입니다. 3월 1일은 전보 발령일입니다.'],['같은 학교에서 5년 이상 근무한 교원은 만기 전보 대상이다.','O','동일 학교 근무기간이 5년 이상인 교원이 만기 전보 대상입니다.'],['희망 전보는 현 학교에서 1년만 근무해도 신청할 수 있다.','X','희망 전보는 동일 학교 근무기간이 2년 이상이어야 합니다.'],['근무기간 중 1개월 미만은 1개월로 올려서 계산한다.','X','1개월 미만의 기간은 버립니다.'],['올해부터 희망 전보 지망 학교를 5개교까지 쓸 수 있다.','O','지망 학교가 3개교에서 5개교로 늘었습니다.']];
+const qs=[['시·도간 교류 희망자 신청 접수 기간은 10월 14일부터 10월 20일까지다.','O','추진 일정: 2026.10.14.(수)~10.20.(화) 시·도간 교류 희망자 신청 접수'],['서류 제출 마감 후에도 희망지를 한 번은 수정할 수 있다.','X','유의사항 2) 서류 제출 마감 후 희망지 수정 절대 불가, 추가 접수 불가'],['휴직 중인 교사에게는 시·도간 교류를 안내하지 않아도 된다.','X','유의사항 4) 모든 소속교원(휴직, 파견, 휴가 중인 교사 등)에게 반드시 안내'],['희망자 인원 현황이 공개(11. 9.)된 뒤에는 신청을 포기할 수 없다.','O','유의사항 3) 인원 현황 공개(2026.11.9.) 이후 포기 불가'],['G-인사이트 개요를 설정하지 않으면 내신서를 작성할 수 없다.','O','추진 일정: ※ 개요 미설정 시, 내신서 작성 불가']];
 let qi=0,sc=0,ans=false;
 function drawQ(){$('#qn').textContent='문제 '+(qi+1)+' / '+qs.length;$('#qq').textContent=qs[qi][0];$('#fb').className='fb';ans=false;$('#qs').textContent=sc}
 function pick(a){if(ans)return;if(!pname()){toast('이름 또는 학교를 먼저 적어 주세요');$('#pname').focus();return}ans=true;const ok=a===qs[qi][1];send({type:'quiz',q:qi+1,a,ok});if(ok)sc++;$('#fb').className='fb '+(ok?'y':'n');$('#fb').textContent=(ok?'정답입니다. ':'아쉬워요. 정답은 '+qs[qi][1]+'. ')+'근거: '+qs[qi][2];$('#qs').textContent=sc}
@@ -675,23 +851,24 @@ $('#bo').onclick=()=>pick('O');$('#bx').onclick=()=>pick('X');
 $('#qnx').onclick=()=>{if(qi<qs.length-1){qi++;drawQ()}else{$('#qq').textContent='끝! '+qs.length+'문제 중 '+sc+'개를 맞혔습니다.';$('#fb').className='fb'}};
 $('#qr').onclick=()=>{qi=0;sc=0;drawQ()};drawQ();
 
-/* 계산기 */
-const sample=[['김하늘','2021-03-01'],['이도윤','2022-09-01'],['박서연','2022-03-15'],['최민준','2026-03-01'],['정유나','2025-03-01']];
-let rows=store.get('calc',null)||sample.map(r=>r.slice());
-function months(a,b){if(!a||!b)return null;const[ay,am,ad]=a.split('-').map(Number);const[by,bm,bd]=b.split('-').map(Number);const e=new Date(Date.UTC(by,bm-1,bd+1));let m=(e.getUTCFullYear()-ay)*12+(e.getUTCMonth()+1-am);if(e.getUTCDate()<ad)m--;return m<0?null:m}
-const fmt=m=>Math.floor(m/12)+'년 '+(m%12)+'개월';
+/* 현황판 */
+const TYPES={'전출·교환 희망':['신청서','증빙 서류'],'교환 만료 복귀':['복귀자 명부','복귀 신청서'],'해당 없음':[]};
+const sample=[['김하늘','전출·교환 희망',1,[1,0]],['이도윤','교환 만료 복귀',1,[1,1]],['박서연','해당 없음',1,[]],['최민준','해당 없음',0,[]],['정유나','전출·교환 희망',1,[1,1]]];
+const clone=a=>JSON.parse(JSON.stringify(a));
+let rows=store.get('board',null)||clone(sample);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function lim(){return[(+$('#cMax').value||5)*12,(+$('#cMin').value||0)*12]}
-function calc(){const base=$('#cBase').value,[mx,mn]=lim();let a=0,b=0;
-  $('#cRows').innerHTML=rows.map((r,i)=>{const m=months(r[1],base);let s,x,y;if(m===null){s='<span class="no">날짜 확인</span>';x=y=''}else{s='<span class="nw">'+fmt(m)+'</span>';if(m>=mx){a++;x='<span class="hot nw">대상</span>'}else x='<span class="no nw">'+fmt(mx-m)+' 남음</span>';if(m>=mn){b++;y='<span class="yes">가능</span>'}else y='<span class="no">불가</span>'}
-  return '<tr><td><input aria-label="이름" data-i="'+i+'" data-f="0" value="'+esc(r[0])+'"></td><td><input type="date" aria-label="발령일" data-i="'+i+'" data-f="1" value="'+esc(r[1])+'"></td><td>'+s+'</td><td>'+x+'</td><td>'+y+'</td><td><button class="del" data-del="'+i+'">삭제</button></td></tr>'}).join('');
-  $('#sA').textContent=a+'명';$('#sB').textContent=b+'명';store.set('calc',rows)}
-$('#cRows').addEventListener('change',e=>{const t=e.target;if(t.dataset.i!==undefined){rows[+t.dataset.i][+t.dataset.f]=t.value;calc()}});
+function stat(r){const need=TYPES[r[1]]||[];const miss=need.filter((d,k)=>!r[3][k]);if(!r[2])return['hot','안내 필요'];if(!need.length)return['no','안내 완료'];return miss.length?['hot',miss.join('·')+' 부족']:['yes','제출 완료']}
+function dday(){const t=$('#cToday').value;if(!t)return'';const d=Math.round((Date.UTC(2026,9,20)-Date.parse(t+'T00:00:00Z'))/864e5);return d>0?'D-'+d:d===0?'오늘 마감':'마감 '+(-d)+'일 지남'}
+function calc(){let a=0,b=0;
+  $('#cRows').innerHTML=rows.map((r,i)=>{const need=TYPES[r[1]]||[];if(r[2])a++;const st=stat(r);if(need.length&&st[0]==='hot'&&r[2])b++;
+    return '<tr><td><input aria-label="이름" data-i="'+i+'" data-f="0" value="'+esc(r[0])+'"></td><td><select aria-label="구분" data-i="'+i+'" data-f="1">'+Object.keys(TYPES).map(k=>'<option'+(k===r[1]?' selected':'')+'>'+k+'</option>').join('')+'</select></td><td><input type="checkbox" class="cb" aria-label="안내" data-i="'+i+'" data-f="2"'+(r[2]?' checked':'')+'></td><td>'+(need.length?need.map((d,k)=>'<label class="dl"><input type="checkbox" class="cb" data-i="'+i+'" data-d="'+k+'"'+(r[3][k]?' checked':'')+'> '+d+'</label>').join(''):'<span class="no">없음</span>')+'</td><td><span class="'+st[0]+'">'+st[1]+'</span></td><td><button class="del" data-del="'+i+'">삭제</button></td></tr>'}).join('');
+  $('#sA').textContent=a+'/'+rows.length;$('#sB').textContent=b+'명';$('#sC').textContent=dday();store.set('board',rows)}
+$('#cRows').addEventListener('change',e=>{const t=e.target,i=+t.dataset.i;if(isNaN(i))return;const r=rows[i];if(t.dataset.d!==undefined){r[3][+t.dataset.d]=t.checked?1:0}else if(t.dataset.f==='2'){r[2]=t.checked?1:0}else if(t.dataset.f==='1'){r[1]=t.value;r[3]=(TYPES[t.value]||[]).map(()=>0)}else{r[0]=t.value}calc()});
 $('#cRows').addEventListener('click',e=>{const d=e.target.dataset.del;if(d!==undefined){rows.splice(+d,1);calc()}});
-['#cBase','#cMax','#cMin'].forEach(s=>$(s).addEventListener('input',calc));
-$('#cAdd').onclick=()=>{rows.push(['새 선생님','2024-03-01']);calc()};
-$('#cReset').onclick=()=>{rows=sample.map(r=>r.slice());calc()};
-$('#cCopy').onclick=async e=>{const b=e.currentTarget,base=$('#cBase').value,[mx,mn]=lim();const t=['이름\t발령일\t근무기간\t만기\t희망 전보'].concat(rows.map(r=>{const m=months(r[1],base);return m===null?r[0]+'\t'+r[1]+'\t\t\t':[r[0],r[1],fmt(m),m>=mx?'대상':'아님',m>=mn?'가능':'불가'].join('\t')})).join('\n');flash(b,await copyText(t))};
+$('#cToday').addEventListener('input',calc);
+$('#cAdd').onclick=()=>{rows.push(['새 선생님','해당 없음',0,[]]);calc()};
+$('#cReset').onclick=()=>{rows=clone(sample);calc()};
+$('#cCopy').onclick=async e=>{const b=e.currentTarget;const t=['이름\t구분\t안내\t제출 서류\t상태'].concat(rows.map(r=>{const need=TYPES[r[1]]||[];return[r[0],r[1],r[2]?'완료':'미완료',need.map((d,k)=>d+(r[3][k]?'○':'×')).join(', '),stat(r)[1]].join('\t')})).join('\n');flash(b,await copyText(t))};
 calc();
 $('#mine').value=store.get('mine','');$('#mine').addEventListener('input',e=>store.set('mine',e.target.value));
 
