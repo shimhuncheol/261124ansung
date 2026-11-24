@@ -9,6 +9,8 @@
 //   해볼업무      : 마무리 장에서 '제출'을 누르면 쌓임
 //   집계          : 점수판 계산용 (손대지 마세요)
 
+// 시트 주소의 /d/ 와 /edit 사이 값. 시트에서 직접 Apps Script를 열었다면 비워 두어도 됩니다.
+const SHEET_ID = '1gl0ywtK0Cpare6lKb1jD4s0V5wCTBbziixicV8SJuek';
 const QUIZ_SHEET = '퀴즈기록';
 const TASK_SHEET = '해볼업무';
 
@@ -35,7 +37,7 @@ function doPost(e) {
 function doGet(e) {
   const session = (e && e.parameter && e.parameter.session) || '';
   const read = n => {
-    const sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(n);
+    const sh = book_().getSheetByName(n);
     if (!sh || sh.getLastRow() < 2) return [];
     return sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues().filter(r => r[1] !== '');
   };
@@ -71,7 +73,7 @@ function 기록지우기() {
 }
 
 function sheet_(name) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = book_();
   let sh = ss.getSheetByName(name);
   if (!sh) {
     sh = ss.insertSheet(name);
@@ -80,6 +82,10 @@ function sheet_(name) {
       : ['시각', '이름', '내용', '회차']);
   }
   return sh;
+}
+
+function book_() {
+  return SHEET_ID ? SpreadsheetApp.openById(SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
 }
 
 function out_(o) {
