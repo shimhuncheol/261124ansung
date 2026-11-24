@@ -3,5 +3,7 @@
 // session: 연수 회차 이름. 바꾸면 새 회차 결과만 따로 모입니다.
 window.KIT_CONFIG = {
   api: "https://script.google.com/macros/s/AKfycbzGWocmLcBKTwZdpbM860LbytgtO75fH7ATrRqc2JExBZJ9v2O5JPx1jK-SPYJwFuXn/exec",
-  session: "261124ansung"
+  session: "261124ansung",
+  // sheet: 결과 구글 시트 (보기 전용 링크)
+  sheet: "https://docs.google.com/spreadsheets/d/1gl0ywtK0Cpare6lKb1jD4s0V5wCTBbziixicV8SJuek/edit?usp=sharing"
 };

@@ -255,6 +255,38 @@ button:focus-visible,.pill:focus-visible{outline:3px solid var(--ok);outline-off
 .qr{width:440px;height:440px;background:#fff;border-radius:28px;padding:18px;box-shadow:0 0 0 1px var(--line)}
 .qr svg{display:block;width:100%;height:100%}
 .shot{width:100%;border-radius:20px;box-shadow:0 0 0 1px var(--line),0 12px 36px rgba(0,0,0,.12);display:block}
+.gm{width:620px;height:860px;display:grid;grid-template-rows:36px auto 30px minmax(0,1fr) 28px auto 28px auto 28px auto 54px;background:#fff;color:#111;border:1px solid #8fb3dc;box-shadow:0 12px 40px rgba(0,0,0,.18);font:15px/1.5 "Noto Sans KR","Malgun Gothic",sans-serif;color-scheme:light}
+.gm-t{background:linear-gradient(#7fb0ea,#6aa2e4);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 12px;font-size:15px}
+.gm-t .w{letter-spacing:10px;font-size:14px}
+.gm-s{display:flex;justify-content:space-between;gap:10px;padding:10px 14px;font-size:14px;border-bottom:1px solid #e3e7ec}
+.gm-s .pr{color:#666;white-space:nowrap}
+.gm-time{background:#f2f2f2;padding:4px 14px;font-size:13px;color:#444}
+.gm-b{overflow:auto;padding:12px 16px;font-size:16px;line-height:1.65;position:relative;border-bottom:1px solid #e3e7ec}
+.gm-b p{margin:0 0 14px}
+.gm-b .pk{color:#e0157a}.gm-b .bl{color:#1a3fd6}
+.gm-copy{position:sticky;top:0;float:right;margin:0 0 6px 8px;font:700 14px "Noto Sans KR",sans-serif;background:#2f8f33;color:#fff;border:0;border-radius:4px;padding:6px 14px;cursor:pointer;z-index:1}
+.gm-copy.ok{background:#1f3654}
+.gm-h{background:#f4f5f7;border-top:1px solid #e1e4e8;padding:3px 12px;font-size:14px;color:#333;display:flex;justify-content:space-between}
+.gm-h .dl{color:#555;font-size:13px}
+.gm-c{padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px}
+.gm .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #b8d0ee;border-radius:999px;padding:2px 12px 2px 3px;font-size:13px;background:#fff}
+.gm .chip small{color:#888;margin-left:4px}
+.gav{width:22px;height:22px;border-radius:50%;background:linear-gradient(#b9c8db,#8fa4bf);display:inline-block}
+.gm .hw{width:22px;height:22px;border-radius:50%;background:#1d7fe0;color:#fff;font-style:normal;font-size:12px;display:grid;place-items:center}
+.gm-f{display:flex;justify-content:flex-end;gap:6px;padding:10px 12px;border-top:1px solid #e1e4e8}
+.gm-f span{padding:6px 16px;border-radius:4px;font-size:14px;border:1px solid #c7d4e4}
+.gm-f .bb{background:#a9c8ef;color:#123}.gm-f .wb{background:#fff}
+.lv{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:56px;align-items:start}
+.lvk{display:flex;gap:64px;margin-bottom:18px}.lvk div{font-size:22px;color:var(--mut)}.lvk b{display:block;font-size:76px;line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums}
+.lvb{display:grid;grid-template-columns:minmax(0,1fr) 300px 96px;gap:20px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:23px}
+.lvb small{display:block;font-size:18px;color:var(--mut)}
+.lvb .tr{height:26px;background:var(--bub);border-radius:999px;overflow:hidden}.lvb .tr i{display:block;height:100%;background:var(--ok);border-radius:999px;transition:width .6s}
+.lvb .pc{text-align:right;font-weight:700;font-size:30px;font-variant-numeric:tabular-nums}
+.lvr div{display:flex;justify-content:space-between;gap:14px;padding:12px 18px;border-radius:16px;font-size:24px;margin-bottom:8px;background:var(--bub)}
+.lvr div:nth-child(-n+3){background:color-mix(in srgb,#ffd400 26%,var(--bg))}
+.lvr b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.lvr em{font-style:normal;color:var(--mut);margin-right:12px;font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){.lvb .tr i{transition:none}}
 .cmp{width:100%;border-collapse:collapse;font-size:21px;margin-top:8px}
 @media(prefers-reduced-motion:reduce){.tb-wrap{transition:none}.mg *{animation:none!important}}
 </style>
@@ -654,6 +686,17 @@ K-에듀파인
   </div>
 </div></section>
 
+<!-- 14b 실시간 결과 -->
+<section class="slide" data-sec="p4" data-t="실시간 결과"><div class="full" style="gap:18px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap"><div><p class="k">4단계 · 실시간 결과</p><h2 style="margin:0">지금, 우리의 점수</h2></div>
+    <div class="links"><a class="pill dark sheetlink" href="https://docs.google.com/spreadsheets/d/1gl0ywtK0Cpare6lKb1jD4s0V5wCTBbziixicV8SJuek/edit?usp=sharing" target="_blank" rel="noopener">결과 시트 바로 가기</a><button class="pill showres" data-tab="quiz">크게 보기</button></div></div>
+  <div class="lv widget">
+    <div><div class="kpi lvk" id="lvKpi"></div><div id="lvBars"></div></div>
+    <div><p class="k" style="margin:0 0 10px">점수 순위</p><div class="lvr" id="lvRank"></div></div>
+  </div>
+  <p class="live" id="lvSt">결과를 불러오는 중…</p>
+</div></section>
+
 <!-- 15 4-1 -->
 <section class="slide" data-sec="p4" data-t="4-1 +상호작용"><div class="two">
   <div><p class="k">4단계</p><h2><span class="plus">+상호작용</span><br>발표 자료에 퀴즈 붙이기</h2>
@@ -683,38 +726,81 @@ K-에듀파인
     <p class="d" style="text-align:center;margin:0">휴대폰 카메라로 찍으면 바로 열립니다<br><b style="color:var(--ink)">만든 사람: 심훈철</b></p></div>
 </div></section>
 
-<!-- 17 차곡 체험 -->
-<section class="slide" data-sec="p5" data-t="차곡 체험"><div class="two" style="grid-template-columns:4fr 8fr;gap:48px">
-  <div><p class="k">5-1 · 써 보기</p><h2>공문을 붙여넣으면<br>할 일이 됩니다</h2>
+<!-- 17 메신저 -->
+<section class="slide" data-sec="p5" data-t="5-1 메신저 쪽지 복사"><div class="two" style="grid-template-columns:6fr 6fr;gap:56px">
+  <div><p class="k">5-1 · 써 보기</p><h2>메신저로 온 쪽지를<br>그대로 복사합니다</h2>
     <ol class="d" style="padding-left:1.2em;margin:0 0 16px;font-size:24px">
-      <li data-ek>차곡 열기 → 📥 자료 넣기</li>
-      <li data-ek>1단계에서 복사한 공문 본문을 붙여넣기</li>
-      <li data-ek>찾아낸 날짜와 할 일 이름 고치기</li>
+      <li data-ek>업무포털 메신저에서 쪽지 열기</li>
+      <li data-ek>본문을 전체 선택(Ctrl+A)해서 복사 · 여기서는 [복사] 버튼</li>
+      <li data-ek>차곡 열기 → 📥 자료 넣기 칸을 한 번 누르기</li></ol>
+    <div class="links"><button class="pill dark cp2" data-t="msg">쪽지 내용 복사</button><a class="pill" href="https://shimhuncheol.github.io/chagok/" target="_blank" rel="noopener">차곡 열기</a></div>
+    <p class="smp" style="margin-top:16px">실습용 재현 화면 · 보낸 사람과 받는 사람 이름은 ○○로 가렸습니다</p></div>
+  <div style="display:flex;justify-content:center"><div class="gm widget">
+      <div class="gm-t"><span>쪽지 읽기</span><span class="w">─ ☐ ✕</span></div>
+      <div class="gm-s"><span>&lt;2026학년도 학교평가 및 2027학교교육과정 수립을 위한 설문 참여 안내&gt;</span><span class="pr">인쇄 ⎙</span></div>
+      <div class="gm-time">보낸 시간 : 2026년 11월 24일 오전 08:55</div>
+      <div class="gm-b"><button class="gm-copy cp2" data-t="msg">복사</button>
+        <p><b>안녕하세요?</b><br><b>2026학년도 오남교육 한해살이를 알차게 해 주신 모든 선생님들께 진심으로 감사드립니다. 내년에도 더 행복한 오남교육을 위해 <span class="pk">[2026학년도 학교평가 및 2027학년도 학교교육과정 수립을 위한 설문]</span>을 진행하고자 합니다.</b></p>
+        <p><b>1)교원용 설문<br>&nbsp; - 설문기간: 11.24(화)~11.27(금)<br>&nbsp; - 참여방법: e알리미 앱-회신 메세지로 설문 참여<br>2)학부모 설문<br>&nbsp; - 설문기간: 11.24(화)~11.30(월)<br>&nbsp; - 참여방볍: e알리미 앱-회신 메세지로 설문 참여<br>&nbsp;&nbsp;&nbsp; <span class="bl">(※협조: 알림장이나 학급알리미에 학부모 설문 참여 안내)</span><br>3)학생 설문<br>&nbsp; - 설문대상: 4,5,6학년<br>&nbsp; - 설문기간: 11.24(화)~11.27(금)<br>&nbsp; - 참여방법: 네어버폼 설문(붙임파일:링크와 큐알 활용)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 학급에서 태블릿 등으로 일괄 실시</b></p>
+        <p><b>협조와 관심 항상 감사합니다!!^^</b></p>
+      </div>
+      <div class="gm-h">⌃ 발신자</div>
+      <div class="gm-c"><span class="chip"><i class="gav"></i>김○○ 교사</span></div>
+      <div class="gm-h">⌃ 첨부파일 (1개)<span class="dl">다운로드 ⤓</span></div>
+      <div class="gm-c"><span class="chip"><i class="hw">한</i>학생 설문 링크 및 큐알.hwpx <small>63 KB</small></span></div>
+      <div class="gm-h">⌃ 수신자 (부서 : 0, 수신인 : 25)</div>
+      <div class="gm-c"><span class="chip"><i class="gav"></i>강○○ ****(****)</span><span class="chip"><i class="gav"></i>강○○ 보건교사(오남초등학교 보건실)</span><span class="chip"><i class="gav"></i>김○○ 교사(오남초등학교 담임교사)</span></div>
+      <div class="gm-f"><span class="bb">답장</span><span class="bb">전달</span><span class="wb">삭제</span><span class="wb">닫기</span></div>
+    </div></div>
+  <pre id="msg" hidden>안녕하세요? 
+2026학년도 오남교육 한해살이를 알차게 해 주신 모든 선생님들께 진심으로 감사드립니다. 내년에도 더 행복한 오남교육을 위해 [2026학년도 학교평가 및 2027학년도 학교교육과정 수립을 위한 설문]을 진행하고자 합니다.
+
+1)교원용 설문
+  - 설문기간: 11.24(화)~11.27(금)
+  - 참여방법: e알리미 앱-회신 메세지로 설문 참여
+2)학부모 설문
+   - 설문기간: 11.24(화)~11.30(월)
+   - 참여방볍: e알리미 앱-회신 메세지로 설문 참여
+     (※협조: 알림장이나 학급알리미에 학부모 설문 참여 안내)
+3)학생 설문
+   - 설문대상: 4,5,6학년
+   - 설문기간: 11.24(화)~11.27(금)
+   - 참여방법: 네어버폼 설문(붙임파일:링크와 큐알 활용)
+                   학급에서 태블릿 등으로 일괄 실시
+
+협조와 관심 항상 감사합니다!!^^</pre>
+</div></section>
+
+<!-- 17b 차곡 체험 -->
+<section class="slide" data-sec="p5" data-t="5-2 차곡에 붙여넣기"><div class="two" style="grid-template-columns:4fr 8fr;gap:48px">
+  <div><p class="k">5-2 · 써 보기</p><h2>붙여넣으면<br>할 일이 됩니다</h2>
+    <ol class="d" style="padding-left:1.2em;margin:0 0 16px;font-size:24px">
+      <li data-ek>찾아낸 날짜와 할 일 이름 확인하기</li>
       <li data-ek>필요한 것만 체크하고 ✅ 입력</li>
       <li data-ek>📅 할 일 보기에서 달력 확인</li></ol>
-    <div class="links"><a class="pill dark" href="https://shimhuncheol.github.io/chagok/" target="_blank" rel="noopener">차곡 열기</a><button class="pill cp2" data-t="doc">공문 본문 복사</button><button class="pill done-b" data-k="p5-1">완료</button></div></div>
-  <div class="widget"><img class="shot" src="img/chagok-result.jpg" alt="차곡에 실습 공문을 붙여넣은 정리 결과 화면: 10월 12일, 13일, 14일, 20일 등 날짜별 할 일 후보"><p class="smp" style="margin-top:10px">실습 공문을 차곡에 붙여넣은 실제 결과 화면</p></div>
+    <div class="links"><a class="pill dark" href="https://shimhuncheol.github.io/chagok/" target="_blank" rel="noopener">차곡 열기</a><button class="pill done-b" data-k="p5-1">완료</button></div></div>
+  <div class="widget"><img class="shot" src="img/chagok-msg.jpg" alt="차곡에 설문 안내 쪽지를 붙여넣은 정리 결과 화면"><p class="smp" style="margin-top:10px">설문 안내 쪽지를 차곡에 붙여넣은 실제 결과 화면</p></div>
 </div></section>
 
 <!-- 18 5-2 -->
-<section class="slide" data-sec="p5" data-t="5-2 +기능"><div class="two">
-  <div><p class="k">5-2</p><h2><span class="plus">+기능</span><br>나만의 작은 차곡 만들기</h2>
-    <p class="d">차곡도 이렇게 말로 시작했습니다. 새 채팅에 공문과 함께 넣고, 무엇을 넣으면 무엇이 나와야 하는지만 말합니다.</p>
+<section class="slide" data-sec="p5" data-t="5-3 +기능"><div class="two">
+  <div><p class="k">5-3</p><h2><span class="plus">+기능</span><br>나만의 작은 차곡 만들기</h2>
+    <p class="d">차곡도 이렇게 말로 시작했습니다. 새 채팅에 쪽지와 함께 넣고, 무엇을 넣으면 무엇이 나와야 하는지만 말합니다.</p>
     <div class="links"><a class="pill" href="https://claude.ai" target="_blank" rel="noopener">Claude</a><a class="pill" href="https://gemini.google.com" target="_blank" rel="noopener">Gemini</a><button class="pill done-b" data-k="p5-2">완료</button></div></div>
   <div class="chat">
-    <div class="att"><i>T</i><div><b>시·도간 교류 공문 (본문복사)</b><small>붙여넣은 텍스트</small></div></div>
-    <div class="u" id="u51" data-ek>위 공문처럼 붙여넣은 글에서 날짜가 나오는 일을 모두 찾아, 날짜순 할 일 목록으로 보여주는 웹앱을 만들어줘. 글을 붙여넣는 칸과 [정리하기] 버튼, 할 일마다 날짜·내용·D-day·완료 체크를 넣고, HTML 한 파일로.</div>
-    <div class="acts"><button class="cp" data-t="u51" data-doc="1">⧉ 자료 + 요청 복사</button></div>
+    <div class="att"><i>T</i><div><b>설문 안내 쪽지 (메신저)</b><small>붙여넣은 텍스트</small></div></div>
+    <div class="u" id="u51" data-ek>위 쪽지처럼 붙여넣은 글에서 날짜가 나오는 일을 모두 찾아, 날짜순 할 일 목록으로 보여주는 웹앱을 만들어줘. 글을 붙여넣는 칸과 [정리하기] 버튼, 할 일마다 날짜·내용·D-day·완료 체크를 넣고, HTML 한 파일로.</div>
+    <div class="acts"><button class="cp" data-t="u51" data-doc="msg">⧉ 자료 + 요청 복사</button></div>
   </div>
 </div></section>
 
 <!-- 19 5-3 -->
-<section class="slide" data-sec="p5" data-t="5-3 바이브 코딩"><div class="two">
-  <div><p class="k">5-3</p><h2>바이브 코딩:<br>말로 기능 더하기</h2>
+<section class="slide" data-sec="p5" data-t="5-4 바이브 코딩"><div class="two">
+  <div><p class="k">5-4</p><h2>바이브 코딩:<br>말로 기능 더하기</h2>
     <p class="d">필요한 기능을 하나씩 말로 더합니다. 코드를 몰라도 프로그램이 자랍니다.</p>
     <div class="links"><button class="pill done-b" data-k="p5-3">완료</button></div></div>
   <div class="chat">
-    <div class="u" id="u52" data-ek>기간(10. 14.~10. 20.)은 시작일과 마감일을 한 줄로 묶어서 보여줘.</div>
+    <div class="u" id="u52" data-ek>기간(11.24~11.27)은 시작일과 마감일을 한 줄로 묶어서 보여줘.</div>
     <div class="acts"><button class="cp" data-t="u52">⧉ 복사</button></div>
     <div class="u" id="u53" data-ek>마감이 3일 이내로 남은 일은 빨간색으로 표시해줘.</div>
     <div class="acts"><button class="cp" data-t="u53">⧉ 복사</button></div>
@@ -724,18 +810,15 @@ K-에듀파인
 </div></section>
 
 <!-- 20 5-4 -->
-<section class="slide" data-sec="p5" data-t="5-4 검증과 공유"><div class="two">
-  <div><p class="k">5-4</p><h2>날짜를 제대로<br>찾았나요?</h2>
-    <p class="d">차곡과 내가 만든 앱이 찾은 날짜를 공문과 맞춰 봅니다. 앱은 날짜를 찾고, 할 일 이름과 판단은 사람이 합니다.</p>
+<section class="slide" data-sec="p5" data-t="5-5 검증과 공유"><div class="two">
+  <div><p class="k">5-5</p><h2>날짜를 제대로<br>찾았나요?</h2>
+    <p class="d">차곡과 내가 만든 앱이 찾은 날짜를 쪽지와 맞춰 봅니다. 앱은 날짜를 찾고, 할 일 이름과 판단은 사람이 합니다.</p>
     <p class="note" data-ek>다 만든 앱을 누구나 쓰게 하려면: Claude는 공유 링크, Gemini Canvas는 공유 버튼, 오래 쓸 앱은 차곡처럼 GitHub Pages에 올립니다.</p>
     <div class="links"><button class="pill done-b" data-k="p5-4">완료</button></div></div>
-  <div><table class="tb"><thead><tr><th>공문 날짜</th><th>할 일</th></tr></thead><tbody>
-    <tr><td class="nw" data-ek>10. 1.(예정)</td><td data-ek>시도별 교류 계획 탑재 (서울시교육청 홈페이지)</td></tr>
-    <tr><td class="nw" data-ek>10. 12.~10. 13.</td><td data-ek>G-인사이트 시·도간 교류 개요 설정</td></tr>
-    <tr><td class="nw" data-ek>10. 14.~10. 20.</td><td data-ek>희망자 신청 접수</td></tr>
-    <tr><td class="nw" data-ek>10. 20.(화)</td><td data-ek>신청서·증빙, 복귀자 명부·복귀 신청서 제출</td></tr>
-    <tr><td class="nw" data-ek>11. 9.</td><td data-ek>희망자 인원 현황 공개 (이후 포기 불가)</td></tr>
-    <tr><td class="nw" data-ek>2027. 3. 1.</td><td data-ek>교류 발령일: 할 일이 아니라 지워도 되는 날짜</td></tr></tbody></table></div>
+  <div><table class="tb"><thead><tr><th>설문</th><th>기간</th><th>방법</th></tr></thead><tbody>
+    <tr><td data-ek>교원용</td><td class="nw" data-ek>11. 24.(화)~11. 27.(금)</td><td data-ek>e알리미 앱 회신 메시지</td></tr>
+    <tr><td data-ek>학부모</td><td class="nw" data-ek>11. 24.(화)~11. 30.(월)</td><td data-ek>e알리미 앱 회신 메시지 · 알림장·학급알리미로 참여 안내(협조)</td></tr>
+    <tr><td data-ek>학생 (4·5·6학년)</td><td class="nw" data-ek>11. 24.(화)~11. 27.(금)</td><td data-ek>네이버폼, 학급에서 태블릿으로 일괄 실시</td></tr></tbody></table></div>
 </div></section>
 
 <!-- 21 치트시트 -->
@@ -763,7 +846,7 @@ K-에듀파인
   <div class="chat widget">
     <div class="who" style="align-self:flex-end"><label for="pname2">이름 또는 학교</label><input id="pname2" class="pname" placeholder="예: 안성초 교감"></div>
     <textarea id="mine" rows="5" placeholder="예: 학교운영위원회 회의록 요약, 방과후 신청 안내문, 교직원 연수 퀴즈" style="border-radius:28px;padding:24px 30px;font-size:26px;background:var(--bub);border:0"></textarea>
-    <div class="acts" style="align-items:center"><span class="live" id="tLive"></span><button class="cp cp2" data-t="mine">⧉ 복사</button><button class="pill showres" data-tab="tasks">모두의 업무 보기</button><button class="pill dark" id="tSend">제출</button></div>
+    <div class="acts" style="align-items:center"><span class="live" id="tLive"></span><button class="cp cp2" data-t="mine">⧉ 복사</button><button class="pill showres" data-tab="tasks">모두의 업무 보기</button><a class="pill sheetlink" href="https://docs.google.com/spreadsheets/d/1gl0ywtK0Cpare6lKb1jD4s0V5wCTBbziixicV8SJuek/edit?usp=sharing" target="_blank" rel="noopener">결과 시트</a><button class="pill dark" id="tSend">제출</button></div>
     <p class="a" style="text-align:right;color:var(--mut)">수고 많으셨습니다.</p>
   </div>
 </div></section>
@@ -806,7 +889,7 @@ K-에듀파인
 <div class="res" id="res" role="dialog" aria-label="참여 결과">
   <header><h3>참여 결과</h3>
     <div class="tabs"><button data-rt="quiz" class="on">퀴즈 결과</button><button data-rt="tasks">해볼 업무</button></div>
-    <div class="act"><span class="st" id="rSt"></span><button id="rHide">이름 가리기</button><button id="rSince">지금부터 새로 집계</button><button id="rAll">전체 보기</button><button id="rClose">닫기 (Esc)</button></div></header>
+    <div class="act"><span class="st" id="rSt"></span><a class="sheetlink" href="https://docs.google.com/spreadsheets/d/1gl0ywtK0Cpare6lKb1jD4s0V5wCTBbziixicV8SJuek/edit?usp=sharing" target="_blank" rel="noopener" style="font:inherit;font-size:16px;border:1px solid var(--line);border-radius:999px;padding:8px 16px;color:var(--ink);text-decoration:none">결과 시트 바로 가기</a><button id="rHide">이름 가리기</button><button id="rSince">지금부터 새로 집계</button><button id="rAll">전체 보기</button><button id="rClose">닫기 (Esc)</button></div></header>
   <div class="body"><div id="rBody"></div>
     <div class="cfg"><label for="apiUrl">결과 저장소 주소 (Apps Script 웹 앱 URL). 비워두면 config.js의 주소를 씁니다. 여기 넣은 주소는 이 브라우저에만 적용돼요.</label><input id="apiUrl" placeholder="https://script.google.com/macros/s/.../exec"></div></div>
 </div>
@@ -834,7 +917,7 @@ $('#toc').addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(
 $('#home').addEventListener('click',e=>{if(!document.body.classList.contains('editing'))go(0)});
 
 /* 이동 */
-function go(i){cur=Math.max(0,Math.min(N-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));const s=slides[cur];const sec=secs.find(x=>x[0]===s.dataset.sec);$('#bSec').textContent=sec[1];$('#bTitle').textContent=s.dataset.t;$('#bPg').textContent=(cur+1)+' / '+N;$('#tPg').textContent=(cur+1)+' / '+N;drawToc();redraw();try{history.replaceState(null,'','#s'+(cur+1))}catch(e){}}
+function go(i){cur=Math.max(0,Math.min(N-1,i));slides.forEach((s,j)=>s.classList.toggle('on',j===cur));const s=slides[cur];const sec=secs.find(x=>x[0]===s.dataset.sec);$('#bSec').textContent=sec[1];$('#bTitle').textContent=s.dataset.t;$('#bPg').textContent=(cur+1)+' / '+N;$('#tPg').textContent=(cur+1)+' / '+N;drawToc();redraw();if(s.querySelector('#lvKpi'))setTimeout(load,0);try{history.replaceState(null,'','#s'+(cur+1))}catch(e){}}
 addEventListener('hashchange',()=>{const m=parseInt((location.hash.match(/^#s(\d+)$/)||[])[1]);if(m&&m-1!==cur)go(m-1)});
 $('#tPrev').onclick=()=>go(cur-1);$('#tNext').onclick=()=>go(cur+1);
 
@@ -846,7 +929,7 @@ $$('input[data-k]').forEach(i=>{i.checked=!!store.get(i.dataset.k,false);i.addEv
 async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();return ok}}
 function tText(t){return [...t.rows].map(r=>[...r.cells].map(c=>c.textContent.trim()).join('\t')).join('\n')}
 function flash(b,ok){if(!b.dataset.o)b.dataset.o=b.textContent;b.textContent=ok?'✓ 복사됨':'복사가 막혔어요';b.classList.add('ok');setTimeout(()=>{b.textContent=b.dataset.o;b.classList.remove('ok')},1500)}
-document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2');if(!b||!b.dataset.t)return;const el=document.getElementById(b.dataset.t);let t=el.tagName==='TABLE'?tText(el):el.tagName==='TEXTAREA'?el.value:el.id==='doc'?el.textContent:el.innerText;if(b.dataset.doc)t=$('#doc').textContent+'\n\n'+t;const ok=await copyText(el.id==='doc'&&!b.dataset.doc?t:t.trim());flash(b,ok);if(b.classList.contains('ef-copy')&&ok)toast('본문이 클립보드에 복사되었습니다')});
+document.addEventListener('click',async e=>{const b=e.target.closest('.cp,.cp2');if(!b||!b.dataset.t)return;const el=document.getElementById(b.dataset.t);let t=el.tagName==='TABLE'?tText(el):el.tagName==='TEXTAREA'?el.value:(el.id==='doc'||el.id==='msg')?el.textContent:el.innerText;if(b.dataset.doc)t=document.getElementById(b.dataset.doc==='1'?'doc':b.dataset.doc).textContent+'\n\n'+t;const ok=await copyText((el.id==='doc'||el.id==='msg')&&!b.dataset.doc?t:t.trim());flash(b,ok);if(ok&&b.classList.contains('ef-copy'))toast('본문이 클립보드에 복사되었습니다');if(ok&&b.dataset.t==='msg')toast('쪽지 내용을 복사했어요. 차곡에 붙여넣으세요')});
 
 /* 미니 슬라이드 */
 const md=[['2027.3.1.자 시·도간 교류 안내','교직원 회의 · 10월 둘째 주'],['대상: 공립 유·초등교원 모두','특수(국립 포함)·보건·사서·전문상담·영양교사 포함'],['신청은 10월 14일~20일','신청서와 증빙 서류를 학교를 거쳐 교육지원청으로'],['마감 후에는 수정·추가 불가','11월 9일 인원 공개 뒤에는 포기할 수 없습니다.'],['교환·파견 만료자도 서류 제출','복귀자 명부와 복귀 신청서를 10월 20일까지'],['궁금한 점은 교무실로','문의: 교무실 내선 201']];
@@ -947,7 +1030,16 @@ function rDraw(){const b=$('#rBody');$('#rHide').textContent=hide?'이름 보이
     '<div class="rank">'+ps.sort((a,c)=>c[1].s-a[1].s||c[1].n-a[1].n).map((p,i)=>'<div><span>'+nm(p[0],i)+'</span><b>'+p[1].s+' / '+p[1].n+'</b></div>').join('')+'</div>'}
   else{const T=(rData.tasks||[]).filter(r=>r.t>=since).sort((a,c)=>c.t-a.t);$('#tLive').textContent=$('#tLive').textContent||'';
     b.innerHTML='<div class="kpi"><div><b>'+T.length+'건</b>제출</div></div>'+(T.length?'<div class="tasks">'+T.map((r,i)=>'<div>'+esc(r.text)+'<small>'+nm(r.name,i)+'</small></div>').join('')+'</div>':'<p>아직 제출된 업무가 없어요.</p>')}}
-async function load(){if(!API()){rDraw();$('#rSt').textContent='';return}try{const r=await fetch(API()+'?session='+encodeURIComponent(SESSION));rData=await r.json();$('#rSt').textContent='자동 새로고침 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){$('#rSt').textContent='불러오지 못했어요. 주소와 배포 설정을 확인해 주세요'}rDraw()}
+function drawLive(){const k=$('#lvKpi');if(!k)return;if(!API()){$('#lvSt').textContent='결과 저장소가 아직 연결되지 않았어요';return}if(!rData)return;
+  const{L,people}=agg();const ps=Object.entries(people);const avg=ps.length?(ps.reduce((a,p)=>a+p[1].s,0)/ps.length).toFixed(1):'0.0';
+  k.innerHTML='<div><b>'+ps.length+'명</b>참여</div><div><b>'+avg+'점</b>평균 (5점 만점)</div><div><b>'+ps.filter(p=>p[1].s===5).length+'명</b>만점</div>';
+  $('#lvBars').innerHTML=qs.map((x,i)=>{const r=L.filter(y=>+y.q===i+1);const ok=r.filter(y=>y.ok).length;const pc=r.length?Math.round(ok/r.length*100):0;return '<div class="lvb"><div>'+(i+1)+'. '+esc(x[0])+'<small>정답 '+x[1]+' · 응답 '+r.length+'명</small></div><div class="tr"><i style="width:'+pc+'%"></i></div><div class="pc">'+pc+'%</div></div>'}).join('');
+  const top=ps.sort((a,c)=>c[1].s-a[1].s||c[1].n-a[1].n).slice(0,10);
+  $('#lvRank').innerHTML=top.length?top.map((p,i)=>'<div><span><em>'+(i+1)+'</em>'+(hide?'참여자 '+(i+1):esc(p[0]||'이름 없음'))+'</span><b>'+p[1].s+' / '+p[1].n+'</b></div>').join(''):'<p class="d">아직 답한 사람이 없어요. 퀴즈를 풀면 바로 올라옵니다.</p>';
+  $('#lvSt').textContent='5초마다 자동으로 새로 고칩니다 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+async function load(){if(!API()){rDraw();$('#rSt').textContent='';return}try{const r=await fetch(API()+'?session='+encodeURIComponent(SESSION));rData=await r.json();$('#rSt').textContent='자동 새로고침 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}catch(e){$('#rSt').textContent='불러오지 못했어요. 주소와 배포 설정을 확인해 주세요';const ls=$('#lvSt');if(ls)ls.textContent='결과를 불러오지 못했어요'}rDraw();drawLive()}
+setInterval(()=>{if(slides[cur].querySelector('#lvKpi')&&!$('#res').classList.contains('on'))load()},5000);
+if(CFG.sheet)$$('.sheetlink').forEach(a=>a.href=CFG.sheet);
 function openRes(tab){if(tab)rTab=tab;$$('.res .tabs button').forEach(x=>x.classList.toggle('on',x.dataset.rt===rTab));$('#res').classList.add('on');rDraw();load();clearInterval(rTimer);rTimer=setInterval(load,5000)}
 function closeRes(){$('#res').classList.remove('on');clearInterval(rTimer)}
 $('#tRes').onclick=()=>openRes(slides[cur].dataset.sec==='p6'?'tasks':rTab);
